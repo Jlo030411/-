@@ -22,17 +22,17 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 5px;
     margin: 12px 0;
   }
   .tab {
-    padding: 7px 12px;
+    padding: 7px 10px;
     background: #16213e;
     border: 2px solid #0f3460;
     border-radius: 20px;
     color: #aaa;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
   }
   .tab.active {
@@ -46,7 +46,7 @@
     border-radius: 15px;
     padding: 15px;
     margin: 12px auto;
-    max-width: 460px;
+    max-width: 480px;
     display: none;
     text-align: left;
   }
@@ -60,6 +60,120 @@
   .node { fill: #e94560; }
   .label-txt { fill: #fff; font-size: 11px; font-weight: bold; }
   .label-small { fill: #aaa; font-size: 9px; }
+
+  /* ==== ТУРШИЛТ СОНГОХ ==== */
+  .scenario-tabs-schem {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+  .scen-btn {
+    background: #0d1b2a;
+    border: 2px solid #0f3460;
+    color: #aaa;
+    padding: 6px 10px;
+    border-radius: 15px;
+    font-size: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .scen-btn.active {
+    background: #0f3460;
+    color: #00ff88;
+    border-color: #00ff88;
+  }
+
+  .scen-info {
+    background: #1a2a3a;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    color: #00d9ff;
+    margin-bottom: 10px;
+    border-left: 4px solid #00d9ff;
+    text-align: left;
+  }
+
+  /* ==== АЛХМЫН ТОВЧ ==== */
+  .step-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 12px;
+    justify-content: center;
+  }
+  .step-btn {
+    background: #0d1b2a;
+    border: 2px solid #0f3460;
+    color: #aaa;
+    padding: 7px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .step-btn.active {
+    background: #0f3460;
+    color: #00ff88;
+    border-color: #00ff88;
+  }
+  .step-btn.done {
+    border-color: #ffdd00;
+    color: #ffdd00;
+  }
+  .step-btn .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #444;
+    color: #fff;
+    font-size: 9px;
+  }
+  .step-btn.active .step-num {
+    background: #00ff88;
+    color: #0d1b2a;
+  }
+  .step-btn.done .step-num {
+    background: #ffdd00;
+    color: #0d1b2a;
+  }
+
+  .step-desc {
+    background: #1a2a3a;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    color: #00d9ff;
+    margin-bottom: 12px;
+    border-left: 4px solid #00d9ff;
+    text-align: left;
+  }
+
+  .step-group {
+    opacity: 0.1;
+    transition: opacity 0.5s, filter 0.5s;
+  }
+  .step-group.active {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(0, 255, 136, 0.4));
+  }
+  .step-group.done {
+    opacity: 0.7;
+  }
+
+  .wire-flow {
+    stroke-dasharray: 8 4;
+    animation: flow 1s linear infinite;
+    filter: drop-shadow(0 0 5px #ffdd00);
+  }
 
   /* ==== ХОЛБОЛТ ==== */
   .wiring-box { display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
@@ -159,7 +273,7 @@
   .team-card:hover { border-color: #00d9ff; }
   .team-card.selected { border-color: #00ff88; background: #1a2a3a; }
   .team-card .team-num {
-    font-size: 18px; font-weight: bold; color: #00ff88;
+    font-size: 16px; font-weight: bold; color: #00ff88;
   }
   .team-card .team-title {
     font-size: 10px; color: #aaa; margin-top: 3px; line-height: 1.3;
@@ -278,7 +392,7 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
   }
-  .step-num {
+  .step-item .step-num2 {
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -291,8 +405,8 @@
     font-weight: bold;
     flex-shrink: 0;
   }
-  .step-item.done .step-num { background: #00ff88; color: #0d1b2a; }
-  .step-item.current .step-num { background: #ffdd00; color: #0d1b2a; }
+  .step-item.done .step-num2 { background: #00ff88; color: #0d1b2a; }
+  .step-item.current .step-num2 { background: #ffdd00; color: #0d1b2a; }
   .step-text { flex: 1; text-align: left; }
 
   .control-btns {
@@ -309,18 +423,9 @@
     font-weight: bold;
     cursor: pointer;
   }
-  .btn-next {
-    background: #00ff88;
-    color: #0d1b2a;
-  }
-  .btn-reset {
-    background: #e94560;
-    color: #fff;
-  }
-  .btn-test {
-    background: #00d9ff;
-    color: #0d1b2a;
-  }
+  .btn-next { background: #00ff88; color: #0d1b2a; }
+  .btn-reset { background: #e94560; color: #fff; }
+  .btn-test { background: #00d9ff; color: #0d1b2a; }
 
   .hint { font-size: 11px; color: #888; margin-top: 8px; line-height: 1.5; }
 
@@ -330,60 +435,273 @@
     padding: 10px;
     font-size: 12px;
     color: #00d9ff;
-    margin-bottom: 10px;
+    margin-top: 12px;
     border-left: 4px solid #00d9ff;
+    text-align: left;
+    line-height: 1.6;
   }
+
+  /* ==== ОНОО АВАХ ==== */
+  .score-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .summary-item {
+    background: #0d1b2a;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    border: 2px solid #0f3460;
+  }
+  .summary-label {
+    font-size: 10px;
+    color: #aaa;
+    margin-bottom: 4px;
+  }
+  .summary-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00ff88;
+  }
+
+  .top-teams {
+    background: #0d1b2a;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-left: 4px solid #ffdd00;
+  }
+  .top-teams h3 { color: #ffdd00; margin: 0 0 8px 0; font-size: 13px; }
+  #topTeamsList { font-size: 12px; line-height: 1.8; }
+
+  .team-score-box {
+    background: #0d1b2a;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 12px 0;
+    border-left: 4px solid #00ff88;
+  }
+  .team-score-box h3 { color: #00ff88; margin: 0 0 8px 0; }
+  .score-display {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+  }
+  .score-current {
+    font-size: 36px;
+    font-weight: bold;
+    color: #00ff88;
+  }
+  .score-max {
+    font-size: 14px;
+    color: #aaa;
+  }
+
+  .score-problem {
+    background: #0d1b2a;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-left: 4px solid #0f3460;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .score-problem.correct { border-left-color: #00ff88; background: #1a3a2a; }
+  .score-problem.wrong { border-left-color: #e94560; background: #3a1a2a; }
+  .score-problem.pending { border-left-color: #ffdd00; }
+
+  .score-problem b { color: #ffdd00; }
+  .score-problem .q-text { color: #fff; margin: 5px 0; }
+  .score-problem .formula-txt { color: #ffdd00; font-family: 'Courier New', monospace; }
+  .score-problem .answer-input {
+    width: 100%;
+    padding: 10px;
+    background: #1a2a3a;
+    border: 2px solid #0f3460;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    margin-top: 8px;
+    font-family: 'Courier New', monospace;
+  }
+  .score-problem .answer-input:focus {
+    outline: none;
+    border-color: #00ff88;
+  }
+  .score-problem .result-feedback {
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: none;
+  }
+  .score-problem .result-feedback.show { display: block; }
+  .score-problem .result-feedback.correct {
+    background: #00ff88;
+    color: #0d1b2a;
+    font-weight: bold;
+  }
+  .score-problem .result-feedback.wrong {
+    background: #e94560;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .result-box {
+    background: #1a2a3a;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 12px;
+    border-left: 6px solid #ffdd00;
+    text-align: center;
+  }
+  .result-box h3 { font-size: 18px; margin: 0 0 8px 0; }
+  .result-box.excellent { border-left-color: #00ff88; }
+  .result-box.good { border-left-color: #00d9ff; }
+  .result-box.average { border-left-color: #ffdd00; }
+  .result-box.poor { border-left-color: #e94560; }
 </style>
 </head>
 <body>
 
 <h1>💡 Цахилгаан гэрэлтүүлгийн симуляц</h1>
 
-<!-- TABS -->
 <div class="tabs">
   <div class="tab active" onclick="showTab('schematic', this)">📐 Схем</div>
   <div class="tab" onclick="showTab('wiring', this)">🔌 Холболт</div>
   <div class="tab" onclick="showTab('sim', this)">⚡ Симуляц</div>
-  <div class="tab" onclick="showTab('room', this)">🏠 Өрөөний монтаж</div>
+  <div class="tab" onclick="showTab('room', this)">🏠 Өрөө</div>
   <div class="tab" onclick="showTab('theory', this)">📘 Онол</div>
   <div class="tab" onclick="showTab('problems', this)">✏️ Бодлого</div>
-  <div class="tab" onclick="showTab('teams', this)">👥 Багийн даалгавар</div>
+  <div class="tab" onclick="showTab('teams', this)">👥 Баг</div>
+  <div class="tab" onclick="showTab('score', this)">🏆 Оноо</div>
 </div>
 
 <!-- ========== СХЕМ ========== -->
 <div class="panel active" id="schematic">
-  <h2>📐 Хэлхээний схем</h2>
+  <h2>📐 Хэлхээний схем — 6 туршилт</h2>
+
+  <div class="scenario-tabs-schem">
+    <button class="scen-btn active" onclick="selectSchemScenario(1, this)">1. Ганц гэрэл</button>
+    <button class="scen-btn" onclick="selectSchemScenario(2, this)">2. Ихэр гэрэл</button>
+    <button class="scen-btn" onclick="selectSchemScenario(3, this)">3. Гурван гэрэл</button>
+    <button class="scen-btn" onclick="selectSchemScenario(4, this)">4. Дөрвөн гэрэл</button>
+    <button class="scen-btn" onclick="selectSchemScenario(5, this)">5. Хос унтраалга</button>
+    <button class="scen-btn" onclick="selectSchemScenario(6, this)">6. Хос хосоор</button>
+  </div>
+
+  <div class="scen-info" id="schemScenarioInfo">
+    <b>🔬 Туршилт 1: "Ганц гэрэл"</b><br>
+    <span style="font-size:11px;color:#aaa;">1 чийдэн, 1 унтраалга — Хамгийн энгийн хэлхээ</span>
+  </div>
+
+  <div class="step-tabs">
+    <button class="step-btn active" onclick="selectStep(1, this)"><span class="step-num">1</span> ЦС</button>
+    <button class="step-btn" onclick="selectStep(2, this)"><span class="step-num">2</span> Хайрцаг</button>
+    <button class="step-btn" onclick="selectStep(3, this)"><span class="step-num">3</span> Утас</button>
+    <button class="step-btn" onclick="selectStep(4, this)"><span class="step-num">4</span> Чийдэн</button>
+    <button class="step-btn" onclick="selectStep(5, this)"><span class="step-num">5</span> Унтраалга</button>
+    <button class="step-btn" onclick="selectStep(6, this)"><span class="step-num">6</span> Турших</button>
+  </div>
+
+  <div class="step-desc" id="stepDesc">
+    <b>Алхам 1:</b> Цахилгаан самбар суурилуулах
+  </div>
+
   <div class="schematic">
-    <svg viewBox="0 0 360 260" width="100%" style="max-width:360px">
-      <path id="w1" class="wire" d="M 40 40 L 40 90 L 160 90" />
-      <circle class="node" cx="40" cy="40" r="5"/>
-      <text x="10" y="30" class="label-txt">L (Фаз)</text>
-      <text x="10" y="45" class="label-small">220V</text>
+    <svg viewBox="0 0 420 420" width="100%" style="max-width:420px" id="schematicSvg">
+      <rect x="5" y="5" width="410" height="410" fill="none" stroke="#0f3460" stroke-width="2" rx="10" stroke-dasharray="5 5"/>
 
-      <g>
-        <line x1="160" y1="90" x2="185" y2="90" stroke="#888" stroke-width="3"/>
-        <line x1="200" y1="90" x2="225" y2="90" stroke="#888" stroke-width="3"/>
-        <line id="sw-arm" x1="185" y1="90" x2="200" y2="70" stroke="#888" stroke-width="3" stroke-linecap="round"/>
+      <g id="sc-ts" class="step-group">
+        <rect x="15" y="170" width="55" height="90" fill="#1a2a3a" stroke="#e94560" stroke-width="3" rx="5"/>
+        <text x="22" y="195" fill="#e94560" font-size="11" font-weight="bold">ЦС</text>
+        <text x="20" y="210" fill="#e94560" font-size="8">220V</text>
+        <text x="20" y="225" fill="#e94560" font-size="8">MCB</text>
+        <circle cx="42" cy="240" r="4" fill="#e94560"/>
       </g>
-      <text x="180" y="115" class="label-txt">S1</text>
-      <text x="170" y="128" class="label-small">Унтраалга</text>
 
-      <path id="w2" class="wire" d="M 225 90 L 290 90 L 290 130" />
-
-      <g>
-        <circle cx="290" cy="155" r="25" fill="#222" stroke="#888" stroke-width="3" id="bulb-circle"/>
-        <line x1="275" y1="145" x2="305" y2="165" stroke="#888" stroke-width="2"/>
-        <line x1="305" y1="145" x2="275" y2="165" stroke="#888" stroke-width="2"/>
+      <g id="sc-junction" class="step-group">
+        <rect x="170" y="185" width="70" height="55" fill="#1a2a3a" stroke="#00d9ff" stroke-width="3" rx="5"/>
+        <text x="178" y="210" fill="#00d9ff" font-size="10" font-weight="bold">ХАЙРЦАГ</text>
+        <text x="185" y="225" fill="#00d9ff" font-size="8">Junction</text>
       </g>
-      <text x="320" y="150" class="label-txt">H1</text>
-      <text x="320" y="163" class="label-small">Чийдэн</text>
 
-      <path id="w3" class="wire" d="M 290 180 L 290 220 L 40 220 L 40 210" />
-      <circle class="node" cx="40" cy="210" r="5"/>
-      <text x="10" y="225" class="label-txt">N (Саармаг)</text>
+      <g id="sc-wires" class="step-group">
+        <path id="sc-wire-L" d="M 70 195 L 170 195" stroke="#e94560" stroke-width="3" fill="none"/>
+        <path id="sc-wire-N" d="M 70 220 L 170 220" stroke="#0077ff" stroke-width="3" fill="none"/>
+        <path id="sc-wire-PE" d="M 70 240 L 170 240" stroke="#00ff88" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+        <text x="95" y="190" fill="#e94560" font-size="8" font-weight="bold">L</text>
+        <text x="95" y="215" fill="#0077ff" font-size="8" font-weight="bold">N</text>
+        <text x="95" y="237" fill="#00ff88" font-size="7">PE</text>
+      </g>
 
-      <text x="180" y="245" class="label-small" id="flow-txt">Гүйдэл: зогссон</text>
+      <g id="sc-bulbs" class="step-group">
+        <g id="sc-h1">
+          <path id="sc-wire-h1" d="M 240 195 L 310 195 L 310 100" stroke="#e94560" stroke-width="3" fill="none"/>
+          <circle cx="310" cy="80" r="20" fill="#222" stroke="#888" stroke-width="2.5" id="sc-bulb1"/>
+          <line x1="298" y1="72" x2="322" y2="88" stroke="#888" stroke-width="2"/>
+          <line x1="322" y1="72" x2="298" y2="88" stroke="#888" stroke-width="2"/>
+          <text x="335" y="78" fill="#fff" font-size="10" font-weight="bold">H1</text>
+        </g>
+        <g id="sc-h2" style="display:none;">
+          <path id="sc-wire-h2" d="M 240 200 L 380 200 L 380 140" stroke="#e94560" stroke-width="2.5" fill="none"/>
+          <circle cx="380" cy="125" r="15" fill="#222" stroke="#888" stroke-width="2" id="sc-bulb2"/>
+          <text x="395" y="128" fill="#fff" font-size="9" font-weight="bold">H2</text>
+        </g>
+        <g id="sc-h3" style="display:none;">
+          <path id="sc-wire-h3" d="M 310 195 L 310 250" stroke="#e94560" stroke-width="2.5" fill="none"/>
+          <circle cx="310" cy="270" r="15" fill="#222" stroke="#888" stroke-width="2" id="sc-bulb3"/>
+          <text x="330" y="274" fill="#fff" font-size="9" font-weight="bold">H3</text>
+        </g>
+        <g id="sc-h4" style="display:none;">
+          <path id="sc-wire-h4" d="M 380 200 L 380 250" stroke="#e94560" stroke-width="2.5" fill="none"/>
+          <circle cx="380" cy="270" r="15" fill="#222" stroke="#888" stroke-width="2" id="sc-bulb4"/>
+          <text x="395" y="274" fill="#fff" font-size="9" font-weight="bold">H4</text>
+        </g>
+      </g>
+
+      <g id="sc-switches" class="step-group">
+        <g id="sc-s1">
+          <path id="sc-wire-s1" d="M 205 240 L 205 340 L 290 340" stroke="#e94560" stroke-width="3" fill="none"/>
+          <line x1="290" y1="340" x2="315" y2="340" stroke="#888" stroke-width="2.5"/>
+          <line x1="330" y1="340" x2="355" y2="340" stroke="#888" stroke-width="2.5"/>
+          <line id="sc-sw-arm1" x1="315" y1="340" x2="330" y2="320" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="315" y="365" fill="#fff" font-size="10" font-weight="bold">S1</text>
+        </g>
+        <g id="sc-s2" style="display:none;">
+          <path id="sc-wire-s2" d="M 380 340 L 380 360" stroke="#e94560" stroke-width="2.5" fill="none"/>
+          <line x1="355" y1="340" x2="380" y2="340" stroke="#888" stroke-width="2.5"/>
+          <line x1="395" y1="340" x2="420" y2="340" stroke="#888" stroke-width="2.5"/>
+          <line id="sc-sw-arm2" x1="380" y1="340" x2="395" y2="320" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="380" y="365" fill="#fff" font-size="10" font-weight="bold">S2</text>
+        </g>
+      </g>
+
+      <g id="sc-test" class="step-group">
+        <text x="100" y="405" fill="#888" font-size="10" font-weight="bold" id="sc-current-text">Гүйдэл: зогссон</text>
+      </g>
     </svg>
+  </div>
+
+  <div class="hint" id="stepHintSchem">
+    💡 Цахилгаан самбарыг ханан дээр бэхэлж, MCB автомат унтраалга суурилуулна
+  </div>
+
+  <div class="control-btns">
+    <button class="ctrl-btn btn-next" onclick="nextStepSchem()">▶ Дараагийн</button>
+    <button class="ctrl-btn btn-test" onclick="testStepSchem()">⚡ Турших</button>
+    <button class="ctrl-btn btn-reset" onclick="resetStepSchem()">🔄 Дахин</button>
+  </div>
+
+  <div class="info-box" id="scenarioDetails">
+    <b>📊 "Ганц гэрэл" туршилтын мэдээлэл:</b><br>
+    • Чийдэн: 1<br>
+    • Унтраалга: 1<br>
+    • Нийт чадал: 60W<br>
+    • Нийт гүйдэл: 0.27A
   </div>
 </div>
 
@@ -397,7 +715,7 @@
     </div>
     <div class="wire-row" id="row2">
       <div class="wire-color c-red"></div>
-      <div class="wire-info"><b>2. Унтраалга S1</b> → Чийдэн H1<br><span class="label-small">Улаан утас</span></div>
+      <div class="wire-info"><b>2. Унтраалга S1</b> → Чийдэн H1<br><span class="label-small">Улаан утас (шилжих фаз)</span></div>
     </div>
     <div class="wire-row" id="row3">
       <div class="wire-color c-blue"></div>
@@ -425,206 +743,115 @@
   <h2>🏠 Өрөөний гэрэлтүүлэг монтаж</h2>
 
   <div class="info-box" id="roomInfo">
-    Туршилт 1: 1 чийдэн, 1 унтраалга — Хамгийн энгийн хэлхээ
+    <b>🏠 Туршилт 1: "Ганц гэрэл"</b><br>
+    <span style="font-size:11px;color:#aaa;">1 чийдэн, 1 унтраалга — Хамгийн энгийн</span>
   </div>
 
-  <!-- Туршилт сонгох -->
   <div class="scenario-tabs">
-    <button class="scenario-btn active" onclick="selectScenario(1, this)">1. 1 чийдэн</button>
-    <button class="scenario-btn" onclick="selectScenario(2, this)">2. 2 чийдэн</button>
-    <button class="scenario-btn" onclick="selectScenario(3, this)">3. 3 чийдэн</button>
-    <button class="scenario-btn" onclick="selectScenario(4, this)">4. 4 чийдэн</button>
-    <button class="scenario-btn" onclick="selectScenario(5, this)">5. 2 унтраалга</button>
+    <button class="scenario-btn active" onclick="selectScenario(1, this)">1. Ганц гэрэл</button>
+    <button class="scenario-btn" onclick="selectScenario(2, this)">2. Ихэр гэрэл</button>
+    <button class="scenario-btn" onclick="selectScenario(3, this)">3. Гурван гэрэл</button>
+    <button class="scenario-btn" onclick="selectScenario(4, this)">4. Дөрвөн гэрэл</button>
+    <button class="scenario-btn" onclick="selectScenario(5, this)">5. Хос унтраалга</button>
     <button class="scenario-btn" onclick="selectScenario(6, this)">6. Хос хосоор</button>
   </div>
 
-  <!-- Өрөөний зураг -->
   <div class="room-view">
     <svg id="roomSvg" viewBox="0 0 340 320" width="100%" style="max-width:340px">
-      <!-- Хана -->
       <rect x="10" y="10" width="320" height="300" fill="#0a1520" stroke="#0f3460" stroke-width="3" rx="5"/>
-
-      <!-- Таазны чийдэнгууд -->
       <g id="bulbsLayer">
         <circle cx="90" cy="70" r="15" fill="#333" stroke="#666" stroke-width="2" id="h1"/>
         <text x="85" y="75" fill="#fff" font-size="10" font-weight="bold">H1</text>
-
         <circle cx="170" cy="70" r="15" fill="#333" stroke="#666" stroke-width="2" id="h2"/>
         <text x="165" y="75" fill="#fff" font-size="10" font-weight="bold">H2</text>
-
         <circle cx="250" cy="70" r="15" fill="#333" stroke="#666" stroke-width="2" id="h3"/>
         <text x="245" y="75" fill="#fff" font-size="10" font-weight="bold">H3</text>
-
         <circle cx="170" cy="120" r="15" fill="#333" stroke="#666" stroke-width="2" id="h4"/>
         <text x="165" y="125" fill="#fff" font-size="10" font-weight="bold">H4</text>
       </g>
-
-      <!-- Холболтын хайрцаг -->
-      <rect x="140" y="170" width="60" height="40" fill="#1a2a3a" stroke="#00d9ff" stroke-width="2" rx="5" id="junctionBox"/>
+      <rect x="140" y="170" width="60" height="40" fill="#1a2a3a" stroke="#00d9ff" stroke-width="2" rx="5"/>
       <text x="148" y="193" fill="#00d9ff" font-size="9" font-weight="bold">ХАЙРЦАГ</text>
-
-      <!-- Унтраалга S1 -->
       <rect x="50" y="240" width="40" height="50" fill="#1a2a3a" stroke="#ffdd00" stroke-width="2" rx="5" id="s1box"/>
       <text x="62" y="270" fill="#ffdd00" font-size="11" font-weight="bold">S1</text>
-
-      <!-- Унтраалга S2 (2 унтраалгатай туршилтад) -->
       <rect x="250" y="240" width="40" height="50" fill="#1a2a3a" stroke="#ffdd00" stroke-width="2" rx="5" id="s2box" style="display:none"/>
       <text x="262" y="270" fill="#ffdd00" font-size="11" font-weight="bold">S2</text>
-
-      <!-- Цахилгаан самбар -->
       <rect x="10" y="150" width="40" height="60" fill="#1a2a3a" stroke="#e94560" stroke-width="2" rx="5"/>
       <text x="16" y="175" fill="#e94560" font-size="9" font-weight="bold">ЦС</text>
       <text x="14" y="190" fill="#e94560" font-size="7">220V</text>
     </svg>
   </div>
 
-  <!-- Угсрах дараалал -->
   <div class="step-list" id="stepList">
     <h3>📋 Угсрах дараалал</h3>
-    <div class="step-item done" data-step="0">
-      <div class="step-num">✓</div>
-      <div class="step-text">Цахилгаан самбар суурилуулах</div>
-    </div>
-    <div class="step-item current" data-step="1">
-      <div class="step-num">2</div>
-      <div class="step-text">Холболтын хайрцаг тавих</div>
-    </div>
-    <div class="step-item" data-step="2">
-      <div class="step-num">3</div>
-      <div class="step-text">Фаз (L) утас татах</div>
-    </div>
-    <div class="step-item" data-step="3">
-      <div class="step-num">4</div>
-      <div class="step-text">Саармаг (N) утас татах</div>
-    </div>
-    <div class="step-item" data-step="4">
-      <div class="step-num">5</div>
-      <div class="step-text">Чийдэн холбох</div>
-    </div>
-    <div class="step-item" data-step="5">
-      <div class="step-num">6</div>
-      <div class="step-text">Унтраалга холбох</div>
-    </div>
-    <div class="step-item" data-step="6">
-      <div class="step-num">7</div>
-      <div class="step-text">Шалгах, турших</div>
-    </div>
+    <div class="step-item done" data-step="0"><div class="step-num2">✓</div><div class="step-text">Цахилгаан самбар суурилуулах</div></div>
+    <div class="step-item current" data-step="1"><div class="step-num2">2</div><div class="step-text">Холболтын хайрцаг тавих</div></div>
+    <div class="step-item" data-step="2"><div class="step-num2">3</div><div class="step-text">Фаз (L) утас татах</div></div>
+    <div class="step-item" data-step="3"><div class="step-num2">4</div><div class="step-text">Саармаг (N) утас татах</div></div>
+    <div class="step-item" data-step="4"><div class="step-num2">5</div><div class="step-text">Чийдэн холбох</div></div>
+    <div class="step-item" data-step="5"><div class="step-num2">6</div><div class="step-text">Унтраалга холбох</div></div>
+    <div class="step-item" data-step="6"><div class="step-num2">7</div><div class="step-text">Шалгах, турших</div></div>
   </div>
 
-  <!-- Удирдлагын товч -->
   <div class="control-btns">
     <button class="ctrl-btn btn-next" onclick="nextStep()">▶ Дараагийн алхам</button>
     <button class="ctrl-btn btn-test" onclick="testCircuit()">⚡ Турших</button>
     <button class="ctrl-btn btn-reset" onclick="resetRoom()">🔄 Дахин</button>
   </div>
 
-  <div class="hint" id="stepHint">
-    💡 Одоо: Холболтын хайрцгийг таазанд бэхлэх
-  </div>
+  <div class="hint" id="stepHint">💡 Одоо: Холболтын хайрцгийг таазанд бэхлэх</div>
 </div>
 
 <!-- ========== ОНОЛ ========== -->
 <div class="panel" id="theory">
-  <h2>📘 Онолын үндэс</h2>
-
-  <h3>1. Омын хууль</h3>
-  <div class="theory-block">
-    <div class="formula">I = U / R</div>
-    <div style="font-size:11px;color:#aaa;">I — Гүйдэл (A), U — Хүчдэл (V), R — Эсэргүүцэл (Ω)</div>
+  <h2>📘 Онолын үндэс — 6 туршилт</h2>
+  <div class="scenario-tabs-schem">
+    <button class="scen-btn active" onclick="selectTheoryScenario(1, this)">1. Ганц гэрэл</button>
+    <button class="scen-btn" onclick="selectTheoryScenario(2, this)">2. Ихэр гэрэл</button>
+    <button class="scen-btn" onclick="selectTheoryScenario(3, this)">3. Гурван гэрэл</button>
+    <button class="scen-btn" onclick="selectTheoryScenario(4, this)">4. Дөрвөн гэрэл</button>
+    <button class="scen-btn" onclick="selectTheoryScenario(5, this)">5. Хос унтраалга</button>
+    <button class="scen-btn" onclick="selectTheoryScenario(6, this)">6. Хос хосоор</button>
   </div>
-
-  <h3>2. Чадал</h3>
-  <div class="theory-block">
-    <div class="formula">P = U × I = I² × R = U² / R</div>
-    <div style="font-size:11px;color:#aaa;">P — Чадал (W)</div>
+  <div class="scen-info" id="theoryScenarioInfo">
+    <b>🔬 Туршилт 1: "Ганц гэрэл"</b> — Онол
   </div>
-
-  <h3>3. Цуваа холболт</h3>
-  <div class="theory-block">
-    <div class="formula">R = R₁ + R₂ + R₃</div>
-    <div class="formula">I = I₁ = I₂ = I₃</div>
-    <div class="formula">U = U₁ + U₂ + U₃</div>
-  </div>
-
-  <h3>4. Зэрэгцээ холболт</h3>
-  <div class="theory-block">
-    <div class="formula">1/R = 1/R₁ + 1/R₂</div>
-    <div class="formula">U = U₁ = U₂ = U₃</div>
-    <div class="formula">I = I₁ + I₂ + I₃</div>
-  </div>
-
-  <h3>5. Гэрэлтүүлэлт</h3>
-  <div class="theory-block">
-    <div class="formula">E = Φ / S</div>
-    <div style="font-size:11px;color:#aaa;">E — люкс (lx), Φ — люмен (lm), S — м²</div>
-  </div>
-
-  <h3>6. Энерги зарцуулалт</h3>
-  <div class="theory-block">
-    <div class="formula">W = P × t</div>
-    <div style="font-size:11px;color:#aaa;">W — кВт·цаг, P — кВт, t — цаг</div>
-  </div>
+  <div id="theoryContent"></div>
 </div>
 
 <!-- ========== БОДЛОГО ========== -->
 <div class="panel" id="problems">
-  <h2>✏️ Бодлогууд</h2>
-
-  <div class="problem">
-    <b>Бодлого 1.</b> 220V хүчдэлд 60W чийдэн.
-    <div class="q">а) Гүйдэл? б) Эсэргүүцэл?</div>
-    <button class="answer-btn" onclick="toggleAns('a1')">Хариу</button>
-    <div class="answer" id="a1">а) I = 60/220 = <b>0.27 A</b><br>б) R = 220²/60 = <b>806.7 Ω</b></div>
+  <h2>✏️ Бодлогууд — 6 туршилт</h2>
+  <div class="scenario-tabs-schem">
+    <button class="scen-btn active" onclick="selectProblemScenario(1, this)">1. Ганц гэрэл</button>
+    <button class="scen-btn" onclick="selectProblemScenario(2, this)">2. Ихэр гэрэл</button>
+    <button class="scen-btn" onclick="selectProblemScenario(3, this)">3. Гурван гэрэл</button>
+    <button class="scen-btn" onclick="selectProblemScenario(4, this)">4. Дөрвөн гэрэл</button>
+    <button class="scen-btn" onclick="selectProblemScenario(5, this)">5. Хос унтраалга</button>
+    <button class="scen-btn" onclick="selectProblemScenario(6, this)">6. Хос хосоор</button>
   </div>
-
-  <div class="problem">
-    <b>Бодлого 2.</b> 3 чийдэн зэрэгцээ, нэг бүр 100W.
-    <div class="q">Нийт гүйдэл ба чадал?</div>
-    <button class="answer-btn" onclick="toggleAns('a2')">Хариу</button>
-    <div class="answer" id="a2">P = 300W, I = 300/220 = <b>1.36 A</b></div>
+  <div class="scen-info" id="problemScenarioInfo">
+    <b>🔬 Туршилт 1: "Ганц гэрэл"</b> — 6 бодлого
   </div>
-
-  <div class="problem">
-    <b>Бодлого 3.</b> Цуваа: R₁=400Ω, R₂=600Ω, U=220V.
-    <div class="q">R, I, U₁, U₂?</div>
-    <button class="answer-btn" onclick="toggleAns('a3')">Хариу</button>
-    <div class="answer" id="a3">R=1000Ω, I=0.22A<br>U₁=88V, U₂=132V</div>
-  </div>
-
-  <div class="problem">
-    <b>Бодлого 4.</b> 20м² өрөөг 200лк гэрэлтүүлэх.
-    <div class="q">Φ = ?</div>
-    <button class="answer-btn" onclick="toggleAns('a4')">Хариу</button>
-    <div class="answer" id="a4">Φ = 200×20 = <b>4000 lm</b></div>
-  </div>
-
-  <div class="problem">
-    <b>Бодлого 5.</b> 100W чийдэн өдөрт 5ц, 30 хоног.
-    <div class="q">W = ?</div>
-    <button class="answer-btn" onclick="toggleAns('a5')">Хариу</button>
-    <div class="answer" id="a5">W = 0.1×150 = <b>15 кВт·цаг</b></div>
-  </div>
-
-  <div class="problem">
-    <b>Бодлого 6.</b> Зэрэгцээ: R₁=300Ω, R₂=600Ω, U=220V.
-    <div class="q">R, I?</div>
-    <button class="answer-btn" onclick="toggleAns('a6')">Хариу</button>
-    <div class="answer" id="a6">R=200Ω, I=220/200 = <b>1.1 A</b></div>
-  </div>
+  <div id="problemContent"></div>
 </div>
 
 <!-- ========== БАГИЙН ДААЛГАВАР ========== -->
 <div class="panel" id="teams">
-  <h2>👥 10 багийн даалгавар</h2>
-  <div class="hint">Баг бүр өөрийн дугаарыг дарж даалгавраа харна уу.</div>
-
-  <div class="progress-bar">
-    <div class="progress-fill" id="progressFill"></div>
+  <h2>👥 Багийн ажил — 6 туршилт</h2>
+  <div class="scenario-tabs-schem">
+    <button class="scen-btn active" onclick="selectTeamScenario(1, this)">1. Ганц гэрэл</button>
+    <button class="scen-btn" onclick="selectTeamScenario(2, this)">2. Ихэр гэрэл</button>
+    <button class="scen-btn" onclick="selectTeamScenario(3, this)">3. Гурван гэрэл</button>
+    <button class="scen-btn" onclick="selectTeamScenario(4, this)">4. Дөрвөн гэрэл</button>
+    <button class="scen-btn" onclick="selectTeamScenario(5, this)">5. Хос унтраалга</button>
+    <button class="scen-btn" onclick="selectTeamScenario(6, this)">6. Хос хосоор</button>
   </div>
+  <div class="scen-info" id="teamScenarioInfo">
+    <b>🔬 Туршилт 1: "Ганц гэрэл"</b> — 10 багийн даалгавар
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   <div class="progress-text" id="progressText">Гүйцэтгэл: 0/10 баг</div>
-
   <div class="team-grid" id="teamGrid"></div>
-
   <div class="task-box" id="taskBox">
     <h3 id="taskTitle"></h3>
     <div class="objective" id="taskObjective"></div>
@@ -632,6 +859,77 @@
     <div class="criteria" id="taskCriteria"></div>
     <div class="hint" id="taskHint"></div>
     <button class="check-btn" onclick="markDone()">✅ Гүйцэтгэсэн</button>
+  </div>
+</div>
+
+<!-- ========== ОНОО АВАХ ========== -->
+<div class="panel" id="score">
+  <h2>🏆 Оноо авах ба дүгнэх</h2>
+
+  <div class="info-box">
+    <b>📋 Дүрэм:</b><br>
+    • 10 баг, баг бүр 3 сурагч<br>
+    • Баг бүр 6 бодлого бодно<br>
+    • Бодлого бүр <b>100 оноо</b><br>
+    • Нийт дээд оноо: <b>600</b><br>
+    • Зөв хариулт → 100 оноо<br>
+    • Буруу хариулт → 0 оноо
+  </div>
+
+  <div class="score-summary" id="scoreSummary">
+    <div class="summary-item">
+      <div class="summary-label">Нийт баг</div>
+      <div class="summary-value">10</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Дундаж оноо</div>
+      <div class="summary-value" id="avgScore">0</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Топ оноо</div>
+      <div class="summary-value" id="topScore">0</div>
+    </div>
+  </div>
+
+  <div class="top-teams" id="topTeams">
+    <h3>🥇 Топ 3 баг</h3>
+    <div id="topTeamsList">Одоогоор хоосон</div>
+  </div>
+
+  <div class="scenario-tabs-schem" id="scoreTeamTabs">
+    <button class="scen-btn active" onclick="selectScoreTeam(1, this)">1-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(2, this)">2-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(3, this)">3-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(4, this)">4-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(5, this)">5-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(6, this)">6-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(7, this)">7-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(8, this)">8-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(9, this)">9-р баг</button>
+    <button class="scen-btn" onclick="selectScoreTeam(10, this)">10-р баг</button>
+  </div>
+
+  <div class="team-score-box" id="teamScoreBox">
+    <h3 id="teamScoreTitle">1-р баг</h3>
+    <div class="score-display">
+      <div class="score-current" id="teamCurrentScore">0</div>
+      <div class="score-max">/ 600 оноо</div>
+    </div>
+    <div class="progress-bar" style="margin:10px 0;">
+      <div class="progress-fill" id="teamProgressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div id="scoreProblems"></div>
+
+  <div class="control-btns">
+    <button class="ctrl-btn btn-test" onclick="checkAllAnswers()">📊 Бүгдийг шалгах</button>
+    <button class="ctrl-btn btn-reset" onclick="resetTeamScore()">🔄 Дахин эхлэх</button>
+  </div>
+
+  <div class="result-box" id="resultBox" style="display:none;">
+    <h3 id="resultTitle"></h3>
+    <div id="resultText"></div>
   </div>
 </div>
 
@@ -656,34 +954,182 @@
     const bulb = document.getElementById('bulb');
     const sw = document.getElementById('switch');
     const status = document.getElementById('status');
-    const wires = ['w1', 'w2', 'w3'];
-    const swArm = document.getElementById('sw-arm');
-    const bulbCircle = document.getElementById('bulb-circle');
-    const flowTxt = document.getElementById('flow-txt');
 
     if (isOn) {
       bulb.classList.add('on'); sw.classList.add('on');
       status.textContent = 'АСААЛТТАЙ';
       status.classList.remove('off'); status.classList.add('on');
-      wires.forEach(w => document.getElementById(w).classList.add('active'));
-      swArm.setAttribute('x2', '200'); swArm.setAttribute('y2', '90');
-      swArm.setAttribute('stroke', '#ffdd00');
-      bulbCircle.setAttribute('fill', '#ffdd00');
-      flowTxt.textContent = 'Гүйдэл: урсаж байна ⚡';
-      flowTxt.setAttribute('fill', '#ffdd00');
-      ['row1','row2','row3'].forEach(r => document.getElementById(r).classList.add('active'));
     } else {
       bulb.classList.remove('on'); sw.classList.remove('on');
       status.textContent = 'УНТРААЛТТАЙ';
       status.classList.remove('on'); status.classList.add('off');
-      wires.forEach(w => document.getElementById(w).classList.remove('active'));
-      swArm.setAttribute('x2', '200'); swArm.setAttribute('y2', '70');
-      swArm.setAttribute('stroke', '#888');
-      bulbCircle.setAttribute('fill', '#222');
-      flowTxt.textContent = 'Гүйдэл: зогссон';
-      flowTxt.setAttribute('fill', '#888');
-      ['row1','row2','row3'].forEach(r => document.getElementById(r).classList.remove('active'));
     }
+  }
+
+  // ===== СХЕМЫН ТУРШИЛТУУД =====
+  let currentSchemScenario = 1;
+  let currentSchemStep = 1;
+
+  const schemScenarios = {
+    1: { name: "Ганц гэрэл", title: "1 чийдэн, 1 унтраалга", desc: "Хамгийн энгийн хэлхээ", bulbs: 1, switches: 1, power: "60W", current: "0.27A", details: "Нэг чийдэнг нэг унтраалгаар удирдах энгийн хэлхээ." },
+    2: { name: "Ихэр гэрэл", title: "2 чийдэн, 1 унтраалга", desc: "Зэрэгцээ холболт", bulbs: 2, switches: 1, power: "120W", current: "0.55A", details: "Хоёр чийдэнг нэг унтраалгаар зэрэгцээ удирдах." },
+    3: { name: "Гурван гэрэл", title: "3 чийдэн, 1 унтраалга", desc: "Олон чийдэн", bulbs: 3, switches: 1, power: "180W", current: "0.82A", details: "Гурван чийдэнг нэг унтраалгаар зэрэгцээ удирдах." },
+    4: { name: "Дөрвөн гэрэл", title: "4 чийдэн, 1 унтраалга", desc: "Бүх чийдэн", bulbs: 4, switches: 1, power: "240W", current: "1.09A", details: "Дөрвөн чийдэнг нэг унтраалгаар зэрэгцээ удирдах." },
+    5: { name: "Хос унтраалга", title: "2 чийдэн, 2 унтраалга", desc: "Тус тусдаа", bulbs: 2, switches: 2, power: "120W", current: "0.55A", details: "Хоёр чийдэнг тус тусад нь удирдах." },
+    6: { name: "Хос хосоор", title: "4 чийдэн, 2 унтраалга", desc: "Хос хосоор", bulbs: 4, switches: 2, power: "240W", current: "1.09A", details: "4 чийдэнг 2 унтраалгаар хос хосоор удирдах." }
+  };
+
+  const schemStepDescriptions = [
+    "",
+    "Цахилгаан самбар суурилуулах — MCB автомат унтраалга тавих",
+    "Холболтын хайрцаг тавих — Таазанд бэхлэх",
+    "Фаз (L), Саармаг (N), Газрын (PE) утас татах",
+    "Чийдэн холбох — Хайрцгаас чийдэн рүү",
+    "Унтраалга холбох — Хайрцгаас унтраалга руу",
+    "Шалгах, турших — Хэлхээг асаах"
+  ];
+
+  const schemStepHints = [
+    "",
+    "💡 Цахилгаан самбарыг ханан дээр бэхэлж, MCB суурилуулна",
+    "💡 Холболтын хайрцгийг таазанд бэхэлнэ",
+    "💡 L (улаан), N (цэнхэр), PE (ногоон) утас татна",
+    "💡 Чийдэнг таазанд бэхэлж, фаз утас холбоно",
+    "💡 Унтраалгыг ханан дээр бэхэлж, фаз утас холбоно",
+    "💡 Бүх холболтыг шалгаж, MCB асаана"
+  ];
+
+  function selectSchemScenario(num, btn) {
+    currentSchemScenario = num;
+    currentSchemStep = 1;
+    document.querySelectorAll('#schematic .scen-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const s = schemScenarios[num];
+    document.getElementById('schemScenarioInfo').innerHTML =
+      `<b>🔬 Туршилт ${num}: "${s.name}"</b><br>
+       <span style="font-size:11px;color:#aaa;">${s.title} — ${s.desc}</span>`;
+
+    document.getElementById('scenarioDetails').innerHTML = `
+      <b>📊 "${s.name}" туршилтын мэдээлэл:</b><br>
+      • Чийдэн: ${s.bulbs}<br>
+      • Унтраалга: ${s.switches}<br>
+      • Холболт: ${s.desc}<br>
+      • Нийт чадал: ${s.power}<br>
+      • Нийт гүйдэл: ${s.current}<br>
+      <span style="color:#aaa;font-size:10px;">${s.details}</span>`;
+
+    const bulbGroups = ['sc-h1', 'sc-h2', 'sc-h3', 'sc-h4'];
+    bulbGroups.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = (i < s.bulbs) ? 'block' : 'none';
+    });
+
+    const swGroups = ['sc-s1', 'sc-s2'];
+    swGroups.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = (i < s.switches) ? 'block' : 'none';
+    });
+
+    selectStep(1, document.querySelectorAll('#schematic .step-btn')[0]);
+  }
+
+  function selectStep(num, btn) {
+    currentSchemStep = num;
+    document.querySelectorAll('#schematic .step-btn').forEach((b, i) => {
+      b.classList.remove('active', 'done');
+      if (i + 1 < num) b.classList.add('done');
+      if (i + 1 === num) b.classList.add('active');
+    });
+
+    document.getElementById('stepDesc').innerHTML =
+      `<b>Алхам ${num}:</b> ${schemStepDescriptions[num]}`;
+    document.getElementById('stepHintSchem').innerHTML = schemStepHints[num];
+
+    const groups = ['sc-ts', 'sc-junction', 'sc-wires', 'sc-bulbs', 'sc-switches', 'sc-test'];
+    groups.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove('active', 'done');
+        if (i + 1 < num) el.classList.add('done');
+        if (i + 1 === num) el.classList.add('active');
+      }
+    });
+
+    if (num === 6) {
+      groups.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('active');
+      });
+    }
+  }
+
+  function nextStepSchem() {
+    if (currentSchemStep < 6) {
+      currentSchemStep++;
+      const btn = document.querySelectorAll('#schematic .step-btn')[currentSchemStep - 1];
+      selectStep(currentSchemStep, btn);
+    } else {
+      alert('✅ Бүх 6 алхам дууссан! "Турших" товч дарна уу.');
+    }
+  }
+
+  function testStepSchem() {
+    const s = schemScenarios[currentSchemScenario];
+    const allWires = ['sc-wire-L', 'sc-wire-N', 'sc-wire-PE', 'sc-wire-h1', 'sc-wire-h2', 'sc-wire-h3', 'sc-wire-h4', 'sc-wire-s1', 'sc-wire-s2'];
+    allWires.forEach(id => {
+      const wire = document.getElementById(id);
+      if (wire && wire.closest('g') && wire.closest('g').style.display !== 'none') {
+        wire.classList.add('wire-flow');
+      }
+    });
+
+    for (let i = 1; i <= s.bulbs; i++) {
+      const bulb = document.getElementById(`sc-bulb${i}`);
+      if (bulb) { bulb.setAttribute('fill', '#ffdd00'); bulb.setAttribute('stroke', '#ffaa00'); }
+    }
+
+    for (let i = 1; i <= s.switches; i++) {
+      const arm = document.getElementById(`sc-sw-arm${i}`);
+      if (arm) {
+        if (i === 1) { arm.setAttribute('x2', '330'); arm.setAttribute('y2', '340'); }
+        else { arm.setAttribute('x2', '395'); arm.setAttribute('y2', '340'); }
+        arm.setAttribute('stroke', '#ffdd00');
+      }
+    }
+
+    const currentText = document.getElementById('sc-current-text');
+    if (currentText) {
+      currentText.textContent = `⚡ "${s.name}" — ${s.current} урсаж байна!`;
+      currentText.setAttribute('fill', '#ffdd00');
+    }
+
+    setTimeout(() => {
+      allWires.forEach(id => {
+        const wire = document.getElementById(id);
+        if (wire) wire.classList.remove('wire-flow');
+      });
+      for (let i = 1; i <= s.bulbs; i++) {
+        const bulb = document.getElementById(`sc-bulb${i}`);
+        if (bulb) { bulb.setAttribute('fill', '#222'); bulb.setAttribute('stroke', '#888'); }
+      }
+      for (let i = 1; i <= s.switches; i++) {
+        const arm = document.getElementById(`sc-sw-arm${i}`);
+        if (arm) {
+          if (i === 1) { arm.setAttribute('x2', '330'); arm.setAttribute('y2', '320'); }
+          else { arm.setAttribute('x2', '395'); arm.setAttribute('y2', '320'); }
+          arm.setAttribute('stroke', '#888');
+        }
+      }
+      if (currentText) {
+        currentText.textContent = 'Гүйдэл: зогссон';
+        currentText.setAttribute('fill', '#888');
+      }
+    }, 3000);
+  }
+
+  function resetStepSchem() {
+    selectStep(1, document.querySelectorAll('#schematic .step-btn')[0]);
   }
 
   // ===== ӨРӨӨНИЙ МОНТАЖ =====
@@ -691,129 +1137,88 @@
   let currentStep = 1;
 
   const scenarios = {
-    1: {
-      title: "1 чийдэн, 1 унтраалга — Хамгийн энгийн хэлхээ",
-      bulbs: 1,
-      switches: 1,
-      description: "Нэг чийдэнг нэг унтраалгаар удирдах"
-    },
-    2: {
-      title: "2 чийдэн, 1 унтраалга — Зэрэгцээ холболт",
-      bulbs: 2,
-      switches: 1,
-      description: "Хоёр чийдэнг нэг унтраалгаар зэрэгцээ удирдах"
-    },
-    3: {
-      title: "3 чийдэн, 1 унтраалга — Олон чийдэн",
-      bulbs: 3,
-      switches: 1,
-      description: "Гурван чийдэнг нэг унтраалгаар удирдах"
-    },
-    4: {
-      title: "4 чийдэн, 1 унтраалга — Бүх чийдэн",
-      bulbs: 4,
-      switches: 1,
-      description: "Дөрвөн чийдэнг нэг унтраалгаар удирдах"
-    },
-    5: {
-      title: "2 чийдэн, 2 унтраалга — Тус тусдаа",
-      bulbs: 2,
-      switches: 2,
-      description: "Хоёр чийдэнг тус тусад нь удирдах"
-    },
-    6: {
-      title: "4 чийдэн, 2 унтраалга — Хос хосоор",
-      bulbs: 4,
-      switches: 2,
-      description: "4 чийдэнг 2 унтраалгаар хос хосоор удирдах"
-    }
+    1: { name: "Ганц гэрэл", title: "1 чийдэн, 1 унтраалга — Хамгийн энгийн", bulbs: 1, switches: 1 },
+    2: { name: "Ихэр гэрэл", title: "2 чийдэн, 1 унтраалга — Зэрэгцээ", bulbs: 2, switches: 1 },
+    3: { name: "Гурван гэрэл", title: "3 чийдэн, 1 унтраалга — Олон чийдэн", bulbs: 3, switches: 1 },
+    4: { name: "Дөрвөн гэрэл", title: "4 чийдэн, 1 унтраалга — Бүх чийдэн", bulbs: 4, switches: 1 },
+    5: { name: "Хос унтраалга", title: "2 чийдэн, 2 унтраалга — Тус тусдаа", bulbs: 2, switches: 2 },
+    6: { name: "Хос хосоор", title: "4 чийдэн, 2 унтраалга — Хос хосоор", bulbs: 4, switches: 2 }
   };
 
-  const stepDescriptions = [
-    "Цахилгаан самбар суурилуулах — MCB автомат унтраалга тавих",
-    "Холболтын хайрцаг тавих — Таазанд бэхлэх",
-    "Фаз (L) утас татах — Цахилгаан самбараас хайрцаг руу",
-    "Саармаг (N) утас татах — Цахилгаан самбараас хайрцаг руу",
-    "Чийдэн холбох — Хайрцгаас чийдэн рүү",
-    "Унтраалга холбох — Хайрцгаас унтраалга руу",
-    "Шалгах, турших — Бүх холболтыг шалгаж, асаах"
+  const roomStepDescs = [
+    "Цахилгаан самбар суурилуулах",
+    "Холболтын хайрцаг тавих",
+    "Фаз (L) утас татах",
+    "Саармаг (N) утас татах",
+    "Чийдэн холбох",
+    "Унтраалга холбох",
+    "Шалгах, турших"
   ];
 
   function selectScenario(num, btn) {
     currentScenario = num;
     currentStep = 1;
-
-    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#room .scenario-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
     const s = scenarios[num];
     document.getElementById('roomInfo').innerHTML =
-      `<b>Туршилт ${num}:</b> ${s.title}<br><span style="font-size:11px;color:#888;">${s.description}</span>`;
+      `<b>🏠 Туршилт ${num}: "${s.name}"</b><br>
+       <span style="font-size:11px;color:#aaa;">${s.title}</span>`;
 
-    // Чийдэнгуудыг харуулах/нуух
     const bulbIds = ['h1', 'h2', 'h3', 'h4'];
     bulbIds.forEach((id, i) => {
       const el = document.getElementById(id);
       const textEl = el.nextElementSibling;
       if (i < s.bulbs) {
-        el.style.display = 'block';
-        textEl.style.display = 'block';
-        el.setAttribute('fill', '#333');
-        el.setAttribute('stroke', '#666');
+        el.style.display = 'block'; textEl.style.display = 'block';
+        el.setAttribute('fill', '#333'); el.setAttribute('stroke', '#666');
+        el.style.filter = 'none';
       } else {
-        el.style.display = 'none';
-        textEl.style.display = 'none';
+        el.style.display = 'none'; textEl.style.display = 'none';
       }
     });
 
-    // S2 унтраалгыг харуулах/нуух
     const s2box = document.getElementById('s2box');
-    if (s.switches === 2) {
-      s2box.style.display = 'block';
-    } else {
-      s2box.style.display = 'none';
-    }
+    s2box.style.display = (s.switches === 2) ? 'block' : 'none';
 
-    // Алхмуудыг reset
     updateSteps();
   }
 
   function updateSteps() {
-    const steps = document.querySelectorAll('.step-item');
+    const steps = document.querySelectorAll('#stepList .step-item');
     steps.forEach((el, i) => {
       el.classList.remove('done', 'current');
       if (i < currentStep) {
         el.classList.add('done');
-        el.querySelector('.step-num').textContent = '✓';
+        el.querySelector('.step-num2').textContent = '✓';
       } else if (i === currentStep) {
         el.classList.add('current');
-        el.querySelector('.step-num').textContent = i + 1;
+        el.querySelector('.step-num2').textContent = i + 1;
       } else {
-        el.querySelector('.step-num').textContent = i + 1;
+        el.querySelector('.step-num2').textContent = i + 1;
       }
     });
 
     const hint = document.getElementById('stepHint');
-    if (currentStep < stepDescriptions.length) {
-      hint.innerHTML = `💡 Одоо: <b>${stepDescriptions[currentStep]}</b>`;
+    if (currentStep < roomStepDescs.length) {
+      hint.innerHTML = `💡 Одоо: <b>${roomStepDescs[currentStep]}</b>`;
     } else {
-      hint.innerHTML = `✅ Бүх алхам дууссан! "Турших" товч дарж хэлхээг шалгана уу.`;
+      hint.innerHTML = `✅ Бүх алхам дууссан! "Турших" дарна уу.`;
     }
   }
 
   function nextStep() {
-    if (currentStep < stepDescriptions.length) {
+    if (currentStep < roomStepDescs.length) {
       currentStep++;
       updateSteps();
     } else {
-      alert('✅ Бүх алхам дууссан! "Турших" товч дарна уу.');
+      alert('✅ Бүх алхам дууссан!');
     }
   }
 
   function testCircuit() {
     const s = scenarios[currentScenario];
-
-    // Чийдэнгуудыг асаах
     const bulbIds = ['h1', 'h2', 'h3', 'h4'];
     bulbIds.forEach((id, i) => {
       if (i < s.bulbs) {
@@ -824,7 +1229,6 @@
       }
     });
 
-    // 2 секундын дараа унтраах
     setTimeout(() => {
       bulbIds.forEach((id, i) => {
         if (i < s.bulbs) {
@@ -836,11 +1240,10 @@
       });
     }, 2000);
 
-    // Мэдэгдэл
     const hint = document.getElementById('stepHint');
-    hint.innerHTML = `⚡ Туршилт ${currentScenario}: ${s.bulbs} чийдэн асаж байна...`;
+    hint.innerHTML = `⚡ "${s.name}" туршилт: ${s.bulbs} чийдэн асаж байна...`;
     setTimeout(() => {
-      hint.innerHTML = `✅ Туршилт ${currentScenario} амжилттай! ${s.bulbs} чийдэн, ${s.switches} унтраалга.`;
+      hint.innerHTML = `✅ "${s.name}" туршилт амжилттай!`;
     }, 2100);
   }
 
@@ -857,34 +1260,296 @@
         el.style.filter = 'none';
       }
     });
-    document.getElementById('stepHint').innerHTML = `💡 Одоо: <b>${stepDescriptions[currentStep]}</b>`;
+    document.getElementById('stepHint').innerHTML = `💡 Одоо: <b>${roomStepDescs[1]}</b>`;
   }
 
-  // ===== 10 БАГИЙН ДААЛГАВАР =====
-  const teams = [
-    { num: 1, title: "Омын хууль", objective: "220V хүчдэлд 100W чийдэнгийн гүйдэл ба эсэргүүцлийг тооцоол.", formula: "I = P/U ; R = U²/P", criteria: "I = 0.45 A, R = 484 Ω", hint: "P=100W, U=220V." },
-    { num: 2, title: "Чадал тооцоо", objective: "220V, 0.5A гүйдэлтэй чийдэнгийн чадлыг ол.", formula: "P = U × I", criteria: "P = 110 W", hint: "U=220, I=0.5." },
-    { num: 3, title: "Цуваа холболт", objective: "R₁=200Ω, R₂=300Ω цуваа. Нийт эсэргүүцэл?", formula: "R = R₁ + R₂", criteria: "R = 500 Ω", hint: "Нэмэгдэнэ." },
-    { num: 4, title: "Зэрэгцээ холболт", objective: "R₁=300Ω, R₂=600Ω зэрэгцээ. Нийт R?", formula: "1/R = 1/R₁ + 1/R₂", criteria: "R = 200 Ω", hint: "1/300 + 1/600." },
-    { num: 5, title: "Гэрэлтүүлэлт", objective: "30м² өрөөг 150лк. Φ = ?", formula: "Φ = E × S", criteria: "Φ = 4500 lm", hint: "150 × 30." },
-    { num: 6, title: "Энерги", objective: "60W чийдэн 4ц × 30 хоног. W = ?", formula: "W = P × t", criteria: "W = 7.2 кВт·цаг", hint: "0.06 × 120." },
-    { num: 7, title: "Холимог", objective: "R₁=100Ω цуваа R₂=200Ω, R₃=300Ω зэрэгцээ. R = ?", formula: "R₁₂=R₁+R₂ ; 1/R=1/R₁₂+1/R₃", criteria: "R = 150 Ω", hint: "R₁₂=300Ω." },
-    { num: 8, title: "Гүйдэл", objective: "60W + 100W зэрэгцээ, 220V. I = ?", formula: "I = (P₁ + P₂) / U", criteria: "I = 0.73 A", hint: "160/220." },
-    { num: 9, title: "Утасны огтлол", objective: "10A, j=5A/mm². S = ?", formula: "S = I / j", criteria: "S = 2 мм²", hint: "10/5." },
-    { num: 10, title: "Хүчдэлийн уналт", objective: "L=20м, S=2.5мм², I=5A, ρ=0.0175. ΔU = ?", formula: "ΔU = 2ρLI/S", criteria: "ΔU ≈ 1.4 V", hint: "2×0.0175×20×5/2.5." }
-  ];
+  // ============================================================
+  // ОНОЛ — 6 ТУРШИЛТ
+  // ============================================================
+  let currentTheoryScenario = 1;
 
+  const theoryData = {
+    1: {
+      name: "Ганц гэрэл",
+      title: "1 чийдэн, 1 унтраалга",
+      formulas: [
+        { name: "Омын хууль", formula: "I = U / R", desc: "I — Гүйдэл (A), U — Хүчдэл (V), R — Эсэргүүцэл (Ω)" },
+        { name: "Чадал", formula: "P = U × I", desc: "P — Чадал (W)" },
+        { name: "Эсэргүүцэл", formula: "R = U² / P", desc: "Чийдэнгийн эсэргүүцэл" },
+        { name: "Гүйдэл (чадлаар)", formula: "I = P / U", desc: "Мэдэгдэж буй чадлаар гүйдэл олох" }
+      ],
+      theory: "Нэг чийдэнг нэг унтраалгаар удирдах хамгийн энгийн хэлхээ. Фаз (L) унтраалга руу, саармаг (N) чийдэн руу шууд холбогдоно. Унтраалга асаалттай үед хэлхээ хаагдаж, гүйдэл урсана."
+    },
+    2: {
+      name: "Ихэр гэрэл",
+      title: "2 чийдэн, 1 унтраалга",
+      formulas: [
+        { name: "Нийт чадал", formula: "P = P₁ + P₂", desc: "Зэрэгцээ холболтын нийт чадал" },
+        { name: "Нийт гүйдэл", formula: "I = I₁ + I₂", desc: "Зэрэгцээ холболтын нийт гүйдэл" },
+        { name: "Нийт эсэргүүцэл", formula: "1/R = 1/R₁ + 1/R₂", desc: "Зэрэгцээ холболтын эсэргүүцэл" },
+        { name: "Хүчдэл", formula: "U = U₁ = U₂", desc: "Зэрэгцээ холболтод хүчдэл ижил" }
+      ],
+      theory: "Хоёр чийдэнг нэг унтраалгаар зэрэгцээ холбох. Хоёр чийдэн зэрэг асаж, зэрэг унтарна. Зэрэгцээ холболтод хүчдэл ижил, гүйдэл нэмэгдэнэ."
+    },
+    3: {
+      name: "Гурван гэрэл",
+      title: "3 чийдэн, 1 унтраалга",
+      formulas: [
+        { name: "Нийт чадал", formula: "P = P₁ + P₂ + P₃", desc: "Гурван чийдэнгийн нийт чадал" },
+        { name: "Нийт гүйдэл", formula: "I = I₁ + I₂ + I₃", desc: "Нийт гүйдэл" },
+        { name: "Нийт эсэргүүцэл", formula: "1/R = 1/R₁ + 1/R₂ + 1/R₃", desc: "Нийт эсэргүүцэл" },
+        { name: "Гэрэлтүүлэлт", formula: "E = Φ / S", desc: "E — люкс (lx), Φ — люмен (lm), S — м²" }
+      ],
+      theory: "Гурван чийдэнг нэг унтраалгаар зэрэгцээ удирдах. Өрөөний гэрэлтүүлгийг нэмэгдүүлнэ. Нийт гүйдэл нэмэгдэх тул утасны хөндлөн огтлолыг зөв сонгох шаардлагатай."
+    },
+    4: {
+      name: "Дөрвөн гэрэл",
+      title: "4 чийдэн, 1 унтраалга",
+      formulas: [
+        { name: "Нийт чадал", formula: "P = P₁ + P₂ + P₃ + P₄", desc: "Дөрвөн чийдэнгийн нийт чадал" },
+        { name: "Нийт гүйдэл", formula: "I = P / U", desc: "Нийт гүйдэл" },
+        { name: "Утасны огтлол", formula: "S = I / j", desc: "j — гүйдлийн нягт (A/mm²)" },
+        { name: "Хүчдэлийн уналт", formula: "ΔU = 2ρLI / S", desc: "ρ — хувийн эсэргүүцэл" }
+      ],
+      theory: "Дөрвөн чийдэнг нэг унтраалгаар зэрэгцээ удирдах. Том өрөөнд тохиромжтой. Нийт гүйдэл ихсэх тул утасны хөндлөн огтлолыг томоор сонгох хэрэгтэй."
+    },
+    5: {
+      name: "Хос унтраалга",
+      title: "2 чийдэн, 2 унтраалга",
+      formulas: [
+        { name: "Нийт чадал", formula: "P = P₁ + P₂", desc: "Нийт чадал" },
+        { name: "Гүйдэл (S1)", formula: "I₁ = P₁ / U", desc: "S1 унтраалгын гүйдэл" },
+        { name: "Гүйдэл (S2)", formula: "I₂ = P₂ / U", desc: "S2 унтраалгын гүйдэл" },
+        { name: "Нийт гүйдэл", formula: "I = I₁ + I₂", desc: "Нийт гүйдэл" }
+      ],
+      theory: "Хоёр чийдэнг тус тусад нь удирдах. Нэг унтраалга нэг чийдэнг удирдана. Энэ нь өрөөний гэрэлтүүлгийг хэсэгчлэн удирдах боломж олгоно."
+    },
+    6: {
+      name: "Хос хосоор",
+      title: "4 чийдэн, 2 унтраалга",
+      formulas: [
+        { name: "S1-ийн чадал", formula: "P₁ = P₁ + P₂", desc: "H1 + H2" },
+        { name: "S2-ийн чадал", formula: "P₂ = P₃ + P₄", desc: "H3 + H4" },
+        { name: "Нийт чадал", formula: "P = P₁ + P₂", desc: "Нийт чадал" },
+        { name: "Нийт гүйдэл", formula: "I = P / U", desc: "Нийт гүйдэл" }
+      ],
+      theory: "4 чийдэнг 2 унтраалгаар хос хосоор удирдах. S1 → H1+H2, S2 → H3+H4. Том өрөөнд гэрэлтүүлгийг хэсэгчлэн удирдахад тохиромжтой."
+    }
+  };
+
+  function selectTheoryScenario(num, btn) {
+    currentTheoryScenario = num;
+    document.querySelectorAll('#theory .scen-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const t = theoryData[num];
+    document.getElementById('theoryScenarioInfo').innerHTML =
+      `<b>🔬 Туршилт ${num}: "${t.name}"</b> — ${t.title}`;
+
+    let html = `<div class="theory-block" style="border-left-color:#00ff88;font-size:12px;">
+      <b>📖 Тайлбар:</b> ${t.theory}
+    </div>`;
+
+    html += `<h3>📐 Томъёонууд (${t.formulas.length})</h3>`;
+    t.formulas.forEach(f => {
+      html += `<div class="theory-block">
+        <b>${f.name}</b>
+        <div class="formula">${f.formula}</div>
+        <div style="font-size:11px;color:#aaa;">${f.desc}</div>
+      </div>`;
+    });
+
+    document.getElementById('theoryContent').innerHTML = html;
+  }
+
+  // ============================================================
+  // БОДЛОГО — 6 ТУРШИЛТ, 6 БОДЛОГО
+  // ============================================================
+  let currentProblemScenario = 1;
+
+  const problemData = {
+    1: [
+      { q: "220V хүчдэлд 60W чийдэн. Гүйдлийг ол.", f: "I = P / U", a: "I = 60/220 = <b>0.27 A</b>" },
+      { q: "60W чийдэнгийн эсэргүүцлийг ол.", f: "R = U² / P", a: "R = 220²/60 = <b>806.7 Ω</b>" },
+      { q: "220V, 0.27A чийдэнгийн чадлыг ол.", f: "P = U × I", a: "P = 220 × 0.27 = <b>59.4 W</b>" },
+      { q: "100W чийдэн 220V-д. Гүйдэл?", f: "I = P / U", a: "I = 100/220 = <b>0.45 A</b>" },
+      { q: "100W чийдэнгийн эсэргүүцэл?", f: "R = U² / P", a: "R = 220²/100 = <b>484 Ω</b>" },
+      { q: "0.5A гүйдэлтэй 220V чийдэнгийн чадал?", f: "P = U × I", a: "P = 220 × 0.5 = <b>110 W</b>" }
+    ],
+    2: [
+      { q: "2 чийдэн 60W+60W зэрэгцээ. Нийт чадал?", f: "P = P₁ + P₂", a: "P = 60+60 = <b>120 W</b>" },
+      { q: "Нийт гүйдэл?", f: "I = P / U", a: "I = 120/220 = <b>0.55 A</b>" },
+      { q: "60W+100W зэрэгцээ. Нийт чадал?", f: "P = P₁ + P₂", a: "P = 60+100 = <b>160 W</b>" },
+      { q: "Нийт гүйдэл?", f: "I = P / U", a: "I = 160/220 = <b>0.73 A</b>" },
+      { q: "Хоёр 100W чийдэнгийн нийт гүйдэл?", f: "I = (P₁+P₂) / U", a: "I = 200/220 = <b>0.91 A</b>" },
+      { q: "R₁=400Ω, R₂=600Ω зэрэгцээ. R?", f: "1/R = 1/R₁ + 1/R₂", a: "R = <b>240 Ω</b>" }
+    ],
+    3: [
+      { q: "3 чийдэн 60W. Нийт чадал?", f: "P = P₁+P₂+P₃", a: "P = 180 W" },
+      { q: "Нийт гүйдэл?", f: "I = P / U", a: "I = 180/220 = <b>0.82 A</b>" },
+      { q: "3 чийдэн 100W. Нийт чадал?", f: "P = 3 × 100", a: "P = <b>300 W</b>" },
+      { q: "Нийт гүйдэл?", f: "I = P / U", a: "I = 300/220 = <b>1.36 A</b>" },
+      { q: "30м² өрөөг 150лк. Φ = ?", f: "Φ = E × S", a: "Φ = 150 × 30 = <b>4500 lm</b>" },
+      { q: "R₁=R₂=R₃=600Ω зэрэгцээ. R?", f: "1/R = 3/R₁", a: "R = 600/3 = <b>200 Ω</b>" }
+    ],
+    4: [
+      { q: "4 чийдэн 60W. Нийт чадал?", f: "P = 4 × 60", a: "P = <b>240 W</b>" },
+      { q: "Нийт гүйдэл?", f: "I = P / U", a: "I = 240/220 = <b>1.09 A</b>" },
+      { q: "Утасны хөндлөн огтлол (j=5)?", f: "S = I / j", a: "S = 1.09/5 = <b>0.22 mm²</b>" },
+      { q: "20м утас, ΔU = ?", f: "ΔU = 2ρLI/S", a: "ΔU = 2×0.0175×20×1.09/0.22 = <b>3.5 V</b>" },
+      { q: "40м² өрөөг 200лк. Φ = ?", f: "Φ = E × S", a: "Φ = 200×40 = <b>8000 lm</b>" },
+      { q: "240W чийдэн 5ц × 30 хоног. W = ?", f: "W = P × t", a: "W = 0.24×150 = <b>36 кВт·цаг</b>" }
+    ],
+    5: [
+      { q: "S1 → 60W, S2 → 60W. Нийт чадал?", f: "P = P₁ + P₂", a: "P = <b>120 W</b>" },
+      { q: "S1-ийн гүйдэл?", f: "I₁ = P₁ / U", a: "I₁ = 60/220 = <b>0.27 A</b>" },
+      { q: "S2-ийн гүйдэл?", f: "I₂ = P₂ / U", a: "I₂ = 60/220 = <b>0.27 A</b>" },
+      { q: "Нийт гүйдэл?", f: "I = I₁ + I₂", a: "I = 0.27+0.27 = <b>0.55 A</b>" },
+      { q: "S1=100W, S2=60W. Нийт гүйдэл?", f: "I = (100+60)/220", a: "I = <b>0.73 A</b>" },
+      { q: "S1=100W, S2=100W. Нийт чадал?", f: "P = 100+100", a: "P = <b>200 W</b>" }
+    ],
+    6: [
+      { q: "S1 → H1+H2 (60W+60W). P₁ = ?", f: "P₁ = 60+60", a: "P₁ = <b>120 W</b>" },
+      { q: "S2 → H3+H4 (60W+60W). P₂ = ?", f: "P₂ = 60+60", a: "P₂ = <b>120 W</b>" },
+      { q: "Нийт чадал?", f: "P = P₁ + P₂", a: "P = <b>240 W</b>" },
+      { q: "Нийт гүйдэл?", f: "I = P / U", a: "I = 240/220 = <b>1.09 A</b>" },
+      { q: "S1-ийн гүйдэл?", f: "I₁ = P₁ / U", a: "I₁ = 120/220 = <b>0.55 A</b>" },
+      { q: "S2-ийн гүйдэл?", f: "I₂ = P₂ / U", a: "I₂ = 120/220 = <b>0.55 A</b>" }
+    ]
+  };
+
+  function selectProblemScenario(num, btn) {
+    currentProblemScenario = num;
+    document.querySelectorAll('#problems .scen-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const problems = problemData[num];
+    document.getElementById('problemScenarioInfo').innerHTML =
+      `<b>🔬 Туршилт ${num}: "${schemScenarios[num].name}"</b> — ${problems.length} бодлого`;
+
+    let html = '';
+    problems.forEach((p, i) => {
+      const ansId = `pa-${num}-${i}`;
+      html += `<div class="problem">
+        <b>Бодлого ${i + 1}.</b> ${p.q}
+        <div class="q">📐 Томъёо: <span style="color:#ffdd00;">${p.f}</span></div>
+        <button class="answer-btn" onclick="toggleAns('${ansId}')">Хариу харах</button>
+        <div class="answer" id="${ansId}">${p.a}</div>
+      </div>`;
+    });
+
+    document.getElementById('problemContent').innerHTML = html;
+  }
+
+  // ============================================================
+  // БАГИЙН АЖИЛ — 6 ТУРШИЛТ, 10 БАГ, 6 ДААЛГАВАР
+  // ============================================================
+  let currentTeamScenario = 1;
   let selectedTeam = null;
-  let doneTeams = new Set();
+  let doneTasks = {
+    1: new Set(), 2: new Set(), 3: new Set(),
+    4: new Set(), 5: new Set(), 6: new Set()
+  };
+
+  const teamData = {
+    1: [
+      { num: 1, title: "Гүйдэл тооцоо", objective: "220V-д 60W чийдэнгийн гүйдлийг ол.", formula: "I = P/U", criteria: "I = 0.27 A", hint: "60/220" },
+      { num: 2, title: "Эсэргүүцэл", objective: "60W чийдэнгийн эсэргүүцлийг ол.", formula: "R = U²/P", criteria: "R = 806.7 Ω", hint: "220²/60" },
+      { num: 3, title: "Чадал", objective: "220V, 0.45A чийдэнгийн чадлыг ол.", formula: "P = U×I", criteria: "P = 99 W", hint: "220×0.45" },
+      { num: 4, title: "Омын хууль", objective: "R=484Ω, U=220V. I = ?", formula: "I = U/R", criteria: "I = 0.45 A", hint: "220/484" },
+      { num: 5, title: "Нийт чадал", objective: "2 чийдэн 60W+60W. P = ?", formula: "P = P₁+P₂", criteria: "P = 120 W", hint: "60+60" },
+      { num: 6, title: "Утасны огтлол", objective: "I=0.27A, j=5. S = ?", formula: "S = I/j", criteria: "S = 0.054 mm²", hint: "0.27/5" },
+      { num: 7, title: "Энерги", objective: "60W чийдэн 5ц × 30 хоног. W = ?", formula: "W = P×t", criteria: "W = 9 кВт·цаг", hint: "0.06×150" },
+      { num: 8, title: "Гэрэлтүүлэлт", objective: "20м² өрөөг 150лк. Φ = ?", formula: "Φ = E×S", criteria: "Φ = 3000 lm", hint: "150×20" },
+      { num: 9, title: "Хүчдэл", objective: "R=806.7Ω, I=0.27A. U = ?", formula: "U = I×R", criteria: "U = 218 V", hint: "0.27×806.7" },
+      { num: 10, title: "Хос чадал", objective: "2 чийдэн 60W+100W. P = ?", formula: "P = P₁+P₂", criteria: "P = 160 W", hint: "60+100" }
+    ],
+    2: [
+      { num: 1, title: "Нийт гүйдэл", objective: "2 чийдэн 60W. I = ?", formula: "I = P/U", criteria: "I = 0.55 A", hint: "120/220" },
+      { num: 2, title: "Нийт эсэргүүцэл", objective: "R₁=400Ω, R₂=600Ω. R = ?", formula: "1/R=1/R₁+1/R₂", criteria: "R = 240 Ω", hint: "1/400+1/600" },
+      { num: 3, title: "Чадал", objective: "60W+100W. P = ?", formula: "P = P₁+P₂", criteria: "P = 160 W", hint: "60+100" },
+      { num: 4, title: "Гүйдэл", objective: "160W, 220V. I = ?", formula: "I = P/U", criteria: "I = 0.73 A", hint: "160/220" },
+      { num: 5, title: "Хүчдэл", objective: "Зэрэгцээ холболтод U₁=? U₂=?", formula: "U₁ = U₂ = U", criteria: "U₁ = U₂ = 220 V", hint: "Ижил" },
+      { num: 6, title: "Энерги", objective: "120W, 5ц × 30 хоног. W = ?", formula: "W = P×t", criteria: "W = 18 кВт·цаг", hint: "0.12×150" },
+      { num: 7, title: "Гүйдэл", objective: "2 чийдэн 100W. I = ?", formula: "I = 200/220", criteria: "I = 0.91 A", hint: "200/220" },
+      { num: 8, title: "Нийт эсэргүүцэл", objective: "R₁=300Ω, R₂=600Ω. R = ?", formula: "1/R = 1/R₁+1/R₂", criteria: "R = 200 Ω", hint: "1/300+1/600" },
+      { num: 9, title: "Хос чадал", objective: "2 чийдэн 100W+100W. P = ?", formula: "P = P₁+P₂", criteria: "P = 200 W", hint: "100+100" },
+      { num: 10, title: "Гэрэлтүүлэлт", objective: "25м², 160лк. Φ = ?", formula: "Φ = E×S", criteria: "Φ = 4000 lm", hint: "160×25" }
+    ],
+    3: [
+      { num: 1, title: "Нийт чадал", objective: "3 чийдэн 60W. P = ?", formula: "P = 3×60", criteria: "P = 180 W", hint: "3×60" },
+      { num: 2, title: "Нийт гүйдэл", objective: "180W, 220V. I = ?", formula: "I = P/U", criteria: "I = 0.82 A", hint: "180/220" },
+      { num: 3, title: "Гэрэлтүүлэлт", objective: "30м², 150лк. Φ = ?", formula: "Φ = E×S", criteria: "Φ = 4500 lm", hint: "150×30" },
+      { num: 4, title: "Нийт эсэргүүцэл", objective: "R₁=R₂=R₃=600Ω. R = ?", formula: "1/R = 3/R₁", criteria: "R = 200 Ω", hint: "600/3" },
+      { num: 5, title: "Чадал", objective: "3 чийдэн 100W. P = ?", formula: "P = 3×100", criteria: "P = 300 W", hint: "3×100" },
+      { num: 6, title: "Гүйдэл", objective: "300W, 220V. I = ?", formula: "I = P/U", criteria: "I = 1.36 A", hint: "300/220" },
+      { num: 7, title: "Энерги", objective: "180W, 4ц × 30. W = ?", formula: "W = P×t", criteria: "W = 21.6 кВт·цаг", hint: "0.18×120" },
+      { num: 8, title: "Утасны огтлол", objective: "I=0.82A, j=5. S = ?", formula: "S = I/j", criteria: "S = 0.16 mm²", hint: "0.82/5" },
+      { num: 9, title: "Чадал", objective: "3 чийдэн 60W+60W+100W. P = ?", formula: "P = P₁+P₂+P₃", criteria: "P = 220 W", hint: "60+60+100" },
+      { num: 10, title: "Гэрэлтүүлэлт", objective: "40м², 180лк. Φ = ?", formula: "Φ = E×S", criteria: "Φ = 7200 lm", hint: "180×40" }
+    ],
+    4: [
+      { num: 1, title: "Нийт чадал", objective: "4 чийдэн 60W. P = ?", formula: "P = 4×60", criteria: "P = 240 W", hint: "4×60" },
+      { num: 2, title: "Нийт гүйдэл", objective: "240W, 220V. I = ?", formula: "I = P/U", criteria: "I = 1.09 A", hint: "240/220" },
+      { num: 3, title: "Утасны огтлол", objective: "I=1.09A, j=5. S = ?", formula: "S = I/j", criteria: "S = 0.22 mm²", hint: "1.09/5" },
+      { num: 4, title: "Гэрэлтүүлэлт", objective: "40м², 200лк. Φ = ?", formula: "Φ = E×S", criteria: "Φ = 8000 lm", hint: "200×40" },
+      { num: 5, title: "Энерги", objective: "240W, 5ц × 30. W = ?", formula: "W = P×t", criteria: "W = 36 кВт·цаг", hint: "0.24×150" },
+      { num: 6, title: "Хүчдэлийн уналт", objective: "20м, S=0.22, I=1.09, ρ=0.0175. ΔU = ?", formula: "ΔU=2ρLI/S", criteria: "ΔU = 3.5 V", hint: "2×0.0175×20×1.09/0.22" },
+      { num: 7, title: "Чадал", objective: "4 чийдэн 100W. P = ?", formula: "P = 4×100", criteria: "P = 400 W", hint: "4×100" },
+      { num: 8, title: "Гүйдэл", objective: "400W, 220V. I = ?", formula: "I = P/U", criteria: "I = 1.82 A", hint: "400/220" },
+      { num: 9, title: "Нийт эсэргүүцэл", objective: "R₁=R₂=R₃=R₄=800Ω. R = ?", formula: "1/R = 4/R₁", criteria: "R = 200 Ω", hint: "800/4" },
+      { num: 10, title: "Хос чадал", objective: "2 чийдэн 60W, 2 чийдэн 100W. P = ?", formula: "P = 2×60+2×100", criteria: "P = 320 W", hint: "120+200" }
+    ],
+    5: [
+      { num: 1, title: "S1 гүйдэл", objective: "S1 → 60W. I₁ = ?", formula: "I₁ = P₁/U", criteria: "I₁ = 0.27 A", hint: "60/220" },
+      { num: 2, title: "S2 гүйдэл", objective: "S2 → 60W. I₂ = ?", formula: "I₂ = P₂/U", criteria: "I₂ = 0.27 A", hint: "60/220" },
+      { num: 3, title: "Нийт гүйдэл", objective: "I = I₁+I₂ = ?", formula: "I = I₁+I₂", criteria: "I = 0.55 A", hint: "0.27+0.27" },
+      { num: 4, title: "Нийт чадал", objective: "60W+60W. P = ?", formula: "P = P₁+P₂", criteria: "P = 120 W", hint: "60+60" },
+      { num: 5, title: "Чадал", objective: "S1=100W, S2=60W. P = ?", formula: "P = P₁+P₂", criteria: "P = 160 W", hint: "100+60" },
+      { num: 6, title: "Гүйдэл", objective: "160W, 220V. I = ?", formula: "I = P/U", criteria: "I = 0.73 A", hint: "160/220" },
+      { num: 7, title: "S1 гүйдэл", objective: "S1 → 100W. I₁ = ?", formula: "I₁ = P₁/U", criteria: "I₁ = 0.45 A", hint: "100/220" },
+      { num: 8, title: "S2 гүйдэл", objective: "S2 → 100W. I₂ = ?", formula: "I₂ = P₂/U", criteria: "I₂ = 0.45 A", hint: "100/220" },
+      { num: 9, title: "Нийт гүйдэл", objective: "100W+100W. I = ?", formula: "I = I₁+I₂", criteria: "I = 0.91 A", hint: "0.45+0.45" },
+      { num: 10, title: "Энерги", objective: "120W, 5ц × 30. W = ?", formula: "W = P×t", criteria: "W = 18 кВт·цаг", hint: "0.12×150" }
+    ],
+    6: [
+      { num: 1, title: "S1 чадал", objective: "H1+H2 (60W+60W). P₁ = ?", formula: "P₁ = 60+60", criteria: "P₁ = 120 W", hint: "60+60" },
+      { num: 2, title: "S2 чадал", objective: "H3+H4 (60W+60W). P₂ = ?", formula: "P₂ = 60+60", criteria: "P₂ = 120 W", hint: "60+60" },
+      { num: 3, title: "Нийт чадал", objective: "P = P₁+P₂ = ?", formula: "P = P₁+P₂", criteria: "P = 240 W", hint: "120+120" },
+      { num: 4, title: "Нийт гүйдэл", objective: "240W, 220V. I = ?", formula: "I = P/U", criteria: "I = 1.09 A", hint: "240/220" },
+      { num: 5, title: "S1 гүйдэл", objective: "120W, 220V. I₁ = ?", formula: "I₁ = P₁/U", criteria: "I₁ = 0.55 A", hint: "120/220" },
+      { num: 6, title: "S2 гүйдэл", objective: "120W, 220V. I₂ = ?", formula: "I₂ = P₂/U", criteria: "I₂ = 0.55 A", hint: "120/220" },
+      { num: 7, title: "S1 чадал", objective: "H1+H2 (100W+100W). P₁ = ?", formula: "P₁ = 100+100", criteria: "P₁ = 200 W", hint: "100+100" },
+      { num: 8, title: "S2 чадал", objective: "H3+H4 (100W+100W). P₂ = ?", formula: "P₂ = 100+100", criteria: "P₂ = 200 W", hint: "100+100" },
+      { num: 9, title: "Нийт чадал", objective: "200W+200W. P = ?", formula: "P = P₁+P₂", criteria: "P = 400 W", hint: "200+200" },
+      { num: 10, title: "Нийт гүйдэл", objective: "400W, 220V. I = ?", formula: "I = P/U", criteria: "I = 1.82 A", hint: "400/220" }
+    ]
+  };
+
+  function selectTeamScenario(num, btn) {
+    currentTeamScenario = num;
+    selectedTeam = null;
+    document.querySelectorAll('#teams .scen-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.getElementById('teamScenarioInfo').innerHTML =
+      `<b>🔬 Туршилт ${num}: "${schemScenarios[num].name}"</b> — 10 багийн даалгавар`;
+
+    renderTeams();
+    document.getElementById('taskBox').classList.remove('show');
+  }
 
   function renderTeams() {
     const grid = document.getElementById('teamGrid');
+    const teams = teamData[currentTeamScenario];
+    const done = doneTasks[currentTeamScenario];
+
     grid.innerHTML = '';
     teams.forEach(t => {
       const card = document.createElement('div');
-      card.className = 'team-card' + (doneTeams.has(t.num) ? ' done' : '');
+      card.className = 'team-card' + (done.has(t.num) ? ' done' : '');
       card.innerHTML = `
-        <div class="team-num">${t.num}-р баг ${doneTeams.has(t.num) ? '✓' : ''}</div>
+        <div class="team-num">${t.num}-р баг ${done.has(t.num) ? '✓' : ''}</div>
         <div class="team-title">${t.title}</div>
       `;
       card.onclick = () => selectTeam(t.num);
@@ -895,12 +1560,16 @@
 
   function selectTeam(num) {
     selectedTeam = num;
+    const teams = teamData[currentTeamScenario];
     const t = teams.find(x => x.num === num);
-    document.querySelectorAll('.team-card').forEach((c, i) => {
+    const done = doneTasks[currentTeamScenario];
+
+    document.querySelectorAll('#teams .team-card').forEach((c, i) => {
       c.classList.toggle('selected', teams[i].num === num);
     });
+
     document.getElementById('taskTitle').innerHTML =
-      `${t.num}-р баг: ${t.title} ${doneTeams.has(t.num) ? '<span class="done-badge">ГҮЙЦЭТГЭСЭН</span>' : ''}`;
+      `${t.num}-р баг: ${t.title} ${done.has(t.num) ? '<span class="done-badge">ГҮЙЦЭТГЭСЭН</span>' : ''}`;
     document.getElementById('taskObjective').innerHTML = `<b>🎯 Зорилго:</b> ${t.objective}`;
     document.getElementById('taskFormula').innerHTML = `<b>📐 Томъёо:</b> ${t.formula}`;
     document.getElementById('taskCriteria').innerHTML = `<b>✅ Шалгуур:</b> ${t.criteria}`;
@@ -910,21 +1579,245 @@
 
   function markDone() {
     if (!selectedTeam) return;
-    doneTeams.add(selectedTeam);
+    doneTasks[currentTeamScenario].add(selectedTeam);
     renderTeams();
     selectTeam(selectedTeam);
   }
 
   function updateProgress() {
-    const pct = (doneTeams.size / teams.length) * 100;
+    const done = doneTasks[currentTeamScenario];
+    const pct = (done.size / 10) * 100;
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('progressText').textContent =
-      `Гүйцэтгэл: ${doneTeams.size}/${teams.length} баг`;
+      `Гүйцэтгэл: ${done.size}/10 баг`;
   }
 
-  // Анхны ачаалалт
-  renderTeams();
+  // ============================================================
+  // ОНОО АВАХ — 10 БАГ, 6 БОДЛОГО
+  // ============================================================
+  let currentScoreTeam = 1;
+
+  let teamScores = {};
+  for (let i = 1; i <= 10; i++) {
+    teamScores[i] = [-1, -1, -1, -1, -1, -1];
+  }
+
+  const correctAnswers = [
+    { answer: "0.27", display: "0.27 A", tolerance: 0.02 },
+    { answer: "806.7", display: "806.7 Ω", tolerance: 5 },
+    { answer: "59.4", display: "59.4 W", tolerance: 1 },
+    { answer: "0.45", display: "0.45 A", tolerance: 0.02 },
+    { answer: "484", display: "484 Ω", tolerance: 5 },
+    { answer: "110", display: "110 W", tolerance: 2 }
+  ];
+
+  const scoreProblemsData = [
+    { q: "220V хүчдэлд 60W чийдэн. Гүйдлийг ол.", f: "I = P / U", unit: "A" },
+    { q: "60W чийдэнгийн эсэргүүцлийг ол.", f: "R = U² / P", unit: "Ω" },
+    { q: "220V, 0.27A чийдэнгийн чадлыг ол.", f: "P = U × I", unit: "W" },
+    { q: "100W чийдэн 220V-д. Гүйдлийг ол.", f: "I = P / U", unit: "A" },
+    { q: "100W чийдэнгийн эсэргүүцлийг ол.", f: "R = U² / P", unit: "Ω" },
+    { q: "0.5A гүйдэлтэй 220V чийдэнгийн чадлыг ол.", f: "P = U × I", unit: "W" }
+  ];
+
+  function selectScoreTeam(num, btn) {
+    currentScoreTeam = num;
+    document.querySelectorAll('#score .scen-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.getElementById('teamScoreTitle').textContent = `${num}-р баг`;
+    renderScoreProblems();
+    updateTeamScore();
+    document.getElementById('resultBox').style.display = 'none';
+  }
+
+  function renderScoreProblems() {
+    const container = document.getElementById('scoreProblems');
+    const scores = teamScores[currentScoreTeam];
+
+    let html = '';
+    scoreProblemsData.forEach((p, i) => {
+      const score = scores[i];
+      let cls = 'pending';
+      if (score === 100) cls = 'correct';
+      else if (score === 0) cls = 'wrong';
+
+      html += `<div class="score-problem ${cls}" id="sp-${currentScoreTeam}-${i}">
+        <b>Бодлого ${i + 1}.</b> ${p.q}
+        <div class="q-text">📐 Томъёо: <span class="formula-txt">${p.f}</span></div>
+        <input type="number" step="any" class="answer-input"
+               id="ans-${currentScoreTeam}-${i}"
+               placeholder="Хариугаа оруулна уу (${p.unit})">
+        <div class="result-feedback" id="fb-${currentScoreTeam}-${i}"></div>
+      </div>`;
+    });
+    container.innerHTML = html;
+
+    scores.forEach((score, i) => {
+      if (score === 100) {
+        const fb = document.getElementById(`fb-${currentScoreTeam}-${i}`);
+        if (fb) {
+          fb.className = 'result-feedback correct show';
+          fb.innerHTML = `✅ Зөв! ${correctAnswers[i].display}`;
+        }
+      } else if (score === 0) {
+        const fb = document.getElementById(`fb-${currentScoreTeam}-${i}`);
+        if (fb) {
+          fb.className = 'result-feedback wrong show';
+          fb.innerHTML = `❌ Буруу. Зөв хариу: ${correctAnswers[i].display}`;
+        }
+      }
+    });
+  }
+
+  function checkAllAnswers() {
+    const scores = teamScores[currentScoreTeam];
+    let correctCount = 0;
+
+    scoreProblemsData.forEach((p, i) => {
+      const input = document.getElementById(`ans-${currentScoreTeam}-${i}`);
+      const fb = document.getElementById(`fb-${currentScoreTeam}-${i}`);
+      const problemBox = document.getElementById(`sp-${currentScoreTeam}-${i}`);
+
+      if (!input || !fb) return;
+
+      const userAnswer = parseFloat(input.value);
+
+      if (isNaN(userAnswer)) {
+        fb.className = 'result-feedback wrong show';
+        fb.innerHTML = `⚠️ Хариу оруулаагүй байна`;
+        return;
+      }
+
+      const correct = correctAnswers[i];
+      const diff = Math.abs(userAnswer - parseFloat(correct.answer));
+      const isCorrect = diff <= correct.tolerance;
+
+      if (isCorrect) {
+        scores[i] = 100;
+        correctCount++;
+        fb.className = 'result-feedback correct show';
+        fb.innerHTML = `✅ Зөв! ${correct.display}`;
+        problemBox.classList.remove('pending', 'wrong');
+        problemBox.classList.add('correct');
+      } else {
+        scores[i] = 0;
+        fb.className = 'result-feedback wrong show';
+        fb.innerHTML = `❌ Буруу. Таны хариу: ${userAnswer} ${p.unit}. Зөв: ${correct.display}`;
+        problemBox.classList.remove('pending', 'correct');
+        problemBox.classList.add('wrong');
+      }
+    });
+
+    updateTeamScore();
+    updateGlobalStats();
+    showResult(correctCount);
+  }
+
+  function updateTeamScore() {
+    const scores = teamScores[currentScoreTeam];
+    const total = scores.reduce((sum, s) => sum + (s > 0 ? s : 0), 0);
+
+    document.getElementById('teamCurrentScore').textContent = total;
+
+    const pct = (total / 600) * 100;
+    document.getElementById('teamProgressFill').style.width = pct + '%';
+  }
+
+  function updateGlobalStats() {
+    let totalScore = 0;
+    let topScore = 0;
+    let teamsWithScore = 0;
+
+    const teamTotals = [];
+    for (let i = 1; i <= 10; i++) {
+      const scores = teamScores[i];
+      const total = scores.reduce((sum, s) => sum + (s > 0 ? s : 0), 0);
+      if (scores.some(s => s >= 0)) teamsWithScore++;
+      if (total > 0) {
+        totalScore += total;
+        if (total > topScore) topScore = total;
+      }
+      teamTotals.push({ num: i, total: total });
+    }
+
+    document.getElementById('avgScore').textContent =
+      teamsWithScore > 0 ? Math.round(totalScore / teamsWithScore) : 0;
+    document.getElementById('topScore').textContent = topScore;
+
+    const sorted = [...teamTotals].sort((a, b) => b.total - a.total);
+    const top3 = sorted.slice(0, 3);
+    const medals = ['🥇', '🥈', '🥉'];
+
+    let topHtml = '';
+    top3.forEach((t, i) => {
+      if (t.total > 0) {
+        topHtml += `${medals[i]} <b>${t.num}-р баг</b> — ${t.total} оноо<br>`;
+      }
+    });
+
+    document.getElementById('topTeamsList').innerHTML =
+      topHtml || 'Одоогоор хоосон';
+  }
+
+  function showResult(correctCount) {
+    const total = correctCount * 100;
+    const box = document.getElementById('resultBox');
+    const title = document.getElementById('resultTitle');
+    const text = document.getElementById('resultText');
+
+    box.style.display = 'block';
+    box.className = 'result-box';
+
+    if (total >= 500) {
+      box.classList.add('excellent');
+      title.textContent = '🌟 МАШ САЙН!';
+      title.style.color = '#00ff88';
+    } else if (total >= 400) {
+      box.classList.add('good');
+      title.textContent = '👍 САЙН!';
+      title.style.color = '#00d9ff';
+    } else if (total >= 300) {
+      box.classList.add('average');
+      title.textContent = '😐 ДУНД';
+      title.style.color = '#ffdd00';
+    } else {
+      box.classList.add('poor');
+      title.textContent = '😟 ХАНГАЛТГҮЙ';
+      title.style.color = '#e94560';
+    }
+
+    text.innerHTML = `
+      <div style="font-size:32px;font-weight:bold;color:${total >= 500 ? '#00ff88' : total >= 400 ? '#00d9ff' : total >= 300 ? '#ffdd00' : '#e94560'};margin:8px 0;">
+        ${total} / 600 оноо
+      </div>
+      <div style="color:#aaa;font-size:12px;">
+        Зөв хариулт: ${correctCount} / 6<br>
+        ${currentScoreTeam}-р баг
+      </div>
+    `;
+
+    updateGlobalStats();
+  }
+
+  function resetTeamScore() {
+    if (!confirm(`${currentScoreTeam}-р багийн оноог дахин эхлүүлэх үү?`)) return;
+
+    teamScores[currentScoreTeam] = [-1, -1, -1, -1, -1, -1];
+    renderScoreProblems();
+    updateTeamScore();
+    updateGlobalStats();
+    document.getElementById('resultBox').style.display = 'none';
+  }
+
+  // ===== АНХНЫ АЧААЛАЛТ =====
   updateSteps();
+  selectSchemScenario(1, document.querySelectorAll('#schematic .scen-btn')[0]);
+  selectTheoryScenario(1, document.querySelectorAll('#theory .scen-btn')[0]);
+  selectProblemScenario(1, document.querySelectorAll('#problems .scen-btn')[0]);
+  selectTeamScenario(1, document.querySelectorAll('#teams .scen-btn')[0]);
+  updateGlobalStats();
+  selectScoreTeam(1, document.querySelectorAll('#score .scen-btn')[0]);
 </script>
 
 </body>
