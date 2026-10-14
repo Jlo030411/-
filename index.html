@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Цахилгаан гэрэлтүүлгийн симуляц</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #1a1a2e;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+  }
+  h1 { font-size: 18px; margin: 10px 0; }
+  h2 { font-size: 15px; color: #00d9ff; margin: 8px 0; }
+  h3 { font-size: 13px; color: #ffdd00; margin: 10px 0 5px; }
+
+  .tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .tab {
+    padding: 7px 12px;
+    background: #16213e;
+    border: 2px solid #0f3460;
+    border-radius: 20px;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .tab.active {
+    background: #0f3460;
+    color: #00ff88;
+    border-color: #00ff88;
+  }
+
+  .panel {
+    background: #16213e;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 12px auto;
+    max-width: 460px;
+    display: none;
+    text-align: left;
+  }
+  .panel.active { display: block; }
+
+  /* ==== СХЕМ ==== */
+  .schematic { background: #0d1b2a; border-radius: 10px; padding: 10px; }
+  .wire { stroke: #888; stroke-width: 3; fill: none; transition: stroke 0.3s; }
+  .wire.active { stroke: #ffdd00; filter: drop-shadow(0 0 5px #ffdd00); stroke-dasharray: 8 4; animation: flow 1s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -20; } }
+  .node { fill: #e94560; }
+  .label-txt { fill: #fff; font-size: 11px; font-weight: bold; }
+  .label-small { fill: #aaa; font-size: 9px; }
+
+  /* ==== ХОЛБОЛТ ==== */
+  .wiring-box { display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
+  .wire-row {
+    background: #0d1b2a; padding: 9px; border-radius: 8px;
+    border-left: 5px solid #666; display: flex; align-items: center; gap: 10px;
+  }
+  .wire-row.active { border-left-color: #ffdd00; background: #1a2a3a; }
+  .wire-color { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; }
+  .c-red { background: #e94560; }
+  .c-blue { background: #0077ff; }
+  .c-green { background: #00ff88; }
+  .wire-info { flex: 1; }
+  .wire-info b { color: #00d9ff; }
+
+  /* ==== СИМУЛЯЦ ==== */
+  .bulb-area { background: #0d1b2a; border-radius: 10px; padding: 15px; margin-top: 12px; }
+  .bulb {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: #444; margin: 0 auto 10px;
+    transition: all 0.3s; border: 3px solid #666;
+  }
+  .bulb.on {
+    background: #ffdd00;
+    box-shadow: 0 0 30px #ffdd00, 0 0 60px #ffaa00;
+    border-color: #ffaa00;
+  }
+  .switch {
+    width: 90px; height: 45px; background: #555;
+    border-radius: 25px; margin: 10px auto;
+    cursor: pointer; position: relative;
+    transition: all 0.3s; border: none; display: block;
+  }
+  .switch.on { background: #00ff88; }
+  .switch::after {
+    content: ''; position: absolute;
+    width: 35px; height: 35px; background: #fff;
+    border-radius: 50%; top: 5px; left: 5px; transition: all 0.3s;
+  }
+  .switch.on::after { left: 50px; }
+  .status { font-size: 16px; font-weight: bold; margin-top: 8px; }
+  .status.on { color: #00ff88; }
+  .status.off { color: #ff5555; }
+
+  /* ==== ОНОЛ ==== */
+  .theory-block {
+    background: #0d1b2a; border-radius: 10px; padding: 12px;
+    margin-bottom: 10px; border-left: 4px solid #00d9ff;
+    font-size: 12px; line-height: 1.6;
+  }
+  .theory-block b { color: #ffdd00; }
+  .formula {
+    background: #1a2a3a; border-radius: 8px; padding: 10px;
+    margin: 8px 0; font-family: 'Courier New', monospace;
+    font-size: 14px; color: #00ff88; text-align: center;
+    border: 1px dashed #0f3460;
+  }
+  .unit { color: #ffdd00; font-size: 11px; }
+
+  /* ==== БОДЛОГО ==== */
+  .problem {
+    background: #0d1b2a; border-radius: 10px; padding: 12px;
+    margin-bottom: 12px; border-left: 4px solid #e94560;
+    font-size: 12px; line-height: 1.6;
+  }
+  .problem b { color: #ffdd00; }
+  .problem .q { color: #fff; margin: 5px 0; }
+  .answer-btn {
+    background: #0f3460; color: #00ff88;
+    border: 1px solid #00ff88; padding: 6px 14px;
+    border-radius: 15px; font-size: 11px; cursor: pointer; margin-top: 8px;
+  }
+  .answer {
+    display: none; background: #1a2a3a; border-radius: 6px;
+    padding: 8px; margin-top: 8px; color: #00ff88;
+    font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6;
+  }
+  .answer.show { display: block; }
+
+  /* ==== БАГИЙН ДААЛГАВАР ==== */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .team-card {
+    background: #0d1b2a;
+    border-radius: 10px;
+    padding: 10px;
+    border: 2px solid #0f3460;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+  .team-card:hover { border-color: #00d9ff; }
+  .team-card.selected { border-color: #00ff88; background: #1a2a3a; }
+  .team-card .team-num {
+    font-size: 18px; font-weight: bold; color: #00ff88;
+  }
+  .team-card .team-title {
+    font-size: 10px; color: #aaa; margin-top: 3px; line-height: 1.3;
+  }
+  .team-card.done { border-color: #ffdd00; }
+  .team-card.done .team-num { color: #ffdd00; }
+
+  .task-box {
+    background: #0d1b2a;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 10px;
+    border-left: 4px solid #00ff88;
+    font-size: 12px;
+    line-height: 1.6;
+    display: none;
+  }
+  .task-box.show { display: block; }
+  .task-box h3 { color: #00ff88; margin-top: 0; }
+  .task-box .objective {
+    background: #1a2a3a; border-radius: 6px; padding: 8px;
+    margin: 6px 0; color: #00d9ff;
+  }
+  .task-box .criteria {
+    background: #1a2a3a; border-radius: 6px; padding: 8px;
+    margin: 6px 0; color: #ffdd00;
+  }
+  .task-box .formula-box {
+    background: #1a2a3a; border-radius: 6px; padding: 8px;
+    margin: 6px 0; font-family: 'Courier New', monospace;
+    color: #00ff88; font-size: 13px;
+  }
+  .check-btn {
+    background: #00ff88; color: #0d1b2a;
+    border: none; padding: 8px 18px;
+    border-radius: 20px; font-size: 12px;
+    font-weight: bold; cursor: pointer; margin-top: 8px;
+  }
+  .done-badge {
+    display: inline-block;
+    background: #ffdd00; color: #0d1b2a;
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 10px; font-weight: bold; margin-left: 5px;
+  }
+
+  .progress-bar {
+    background: #0d1b2a; border-radius: 10px;
+    height: 20px; margin: 10px 0; overflow: hidden;
+  }
+  .progress-fill {
+    background: linear-gradient(90deg, #00ff88, #00d9ff);
+    height: 100%; width: 0%;
+    transition: width 0.5s; border-radius: 10px;
+  }
+  .progress-text {
+    font-size: 11px; color: #aaa; margin-top: 5px;
+  }
+
+  .hint { font-size: 11px; color: #888; margin-top: 8px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<h1>💡 Цахилгаан гэрэлтүүлгийн симуляц</h1>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('schematic', this)">📐 Схем</div>
+  <div class="tab" onclick="showTab('wiring', this)">🔌 Холболт</div>
+  <div class="tab" onclick="showTab('sim', this)">⚡ Симуляц</div>
+  <div class="tab" onclick="showTab('theory', this)">📘 Онол</div>
+  <div class="tab" onclick="showTab('problems', this)">✏️ Бодлого</div>
+  <div class="tab" onclick="showTab('teams', this)">👥 Багийн даалгавар</div>
+</div>
+
+<!-- ========== СХЕМ ========== -->
+<div class="panel active" id="schematic">
+  <h2>📐 Хэлхээний схем</h2>
+  <div class="schematic">
+    <svg viewBox="0 0 360 260" width="100%" style="max-width:360px">
+      <path id="w1" class="wire" d="M 40 40 L 40 90 L 160 90" />
+      <circle class="node" cx="40" cy="40" r="5"/>
+      <text x="10" y="30" class="label-txt">L (Фаз)</text>
+      <text x="10" y="45" class="label-small">220V</text>
+
+      <g>
+        <line x1="160" y1="90" x2="185" y2="90" stroke="#888" stroke-width="3"/>
+        <line x1="200" y1="90" x2="225" y2="90" stroke="#888" stroke-width="3"/>
+        <line id="sw-arm" x1="185" y1="90" x2="200" y2="70" stroke="#888" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <text x="180" y="115" class="label-txt">S1</text>
+      <text x="170" y="128" class="label-small">Унтраалга</text>
+
+      <path id="w2" class="wire" d="M 225 90 L 290 90 L 290 130" />
+
+      <g>
+        <circle cx="290" cy="155" r="25" fill="#222" stroke="#888" stroke-width="3" id="bulb-circle"/>
+        <line x1="275" y1="145" x2="305" y2="165" stroke="#888" stroke-width="2"/>
+        <line x1="305" y1="145" x2="275" y2="165" stroke="#888" stroke-width="2"/>
+      </g>
+      <text x="320" y="150" class="label-txt">H1</text>
+      <text x="320" y="163" class="label-small">Чийдэн</text>
+
+      <path id="w3" class="wire" d="M 290 180 L 290 220 L 40 220 L 40 210" />
+      <circle class="node" cx="40" cy="210" r="5"/>
+      <text x="10" y="225" class="label-txt">N (Саармаг)</text>
+
+      <text x="180" y="245" class="label-small" id="flow-txt">Гүйдэл: зогссон</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ========== ХОЛБОЛТ ========== -->
+<div class="panel" id="wiring">
+  <h2>🔌 Холболтын хүснэгт</h2>
+  <div class="wiring-box">
+    <div class="wire-row" id="row1">
+      <div class="wire-color c-red"></div>
+      <div class="wire-info"><b>1. L (Фаз)</b> → Унтраалга S1<br><span class="label-small">Улаан утас, 220V</span></div>
+    </div>
+    <div class="wire-row" id="row2">
+      <div class="wire-color c-red"></div>
+      <div class="wire-info"><b>2. Унтраалга S1</b> → Чийдэн H1<br><span class="label-small">Улаан утас</span></div>
+    </div>
+    <div class="wire-row" id="row3">
+      <div class="wire-color c-blue"></div>
+      <div class="wire-info"><b>3. Чийдэн H1</b> → N (Саармаг)<br><span class="label-small">Цэнхэр утас</span></div>
+    </div>
+    <div class="wire-row" id="row4">
+      <div class="wire-color c-green"></div>
+      <div class="wire-info"><b>4. Газрын холболт (PE)</b><br><span class="label-small">Ногоон/шар утас</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== СИМУЛЯЦ ========== -->
+<div class="panel" id="sim">
+  <h2>⚡ Ажиллагааны симуляц</h2>
+  <div class="bulb-area">
+    <div class="bulb" id="bulb"></div>
+    <button class="switch" id="switch" onclick="toggleSwitch()"></button>
+    <div class="status off" id="status">УНТРААЛТТАЙ</div>
+  </div>
+</div>
+
+<!-- ========== ОНОЛ ========== -->
+<div class="panel" id="theory">
+  <h2>📘 Онолын үндэс</h2>
+
+  <h3>1. Омын хууль</h3>
+  <div class="theory-block">
+    <div class="formula">I = U / R</div>
+    <div style="font-size:11px;color:#aaa;">I — Гүйдэл (A), U — Хүчдэл (V), R — Эсэргүүцэл (Ω)</div>
+  </div>
+
+  <h3>2. Чадал</h3>
+  <div class="theory-block">
+    <div class="formula">P = U × I = I² × R = U² / R</div>
+    <div style="font-size:11px;color:#aaa;">P — Чадал (W)</div>
+  </div>
+
+  <h3>3. Цуваа холболт</h3>
+  <div class="theory-block">
+    <div class="formula">R = R₁ + R₂ + R₃</div>
+    <div class="formula">I = I₁ = I₂ = I₃</div>
+    <div class="formula">U = U₁ + U₂ + U₃</div>
+  </div>
+
+  <h3>4. Зэрэгцээ холболт</h3>
+  <div class="theory-block">
+    <div class="formula">1/R = 1/R₁ + 1/R₂</div>
+    <div class="formula">U = U₁ = U₂ = U₃</div>
+    <div class="formula">I = I₁ + I₂ + I₃</div>
+  </div>
+
+  <h3>5. Гэрэлтүүлэлт</h3>
+  <div class="theory-block">
+    <div class="formula">E = Φ / S</div>
+    <div style="font-size:11px;color:#aaa;">E — люкс (lx), Φ — люмен (lm), S — м²</div>
+  </div>
+
+  <h3>6. Энерги зарцуулалт</h3>
+  <div class="theory-block">
+    <div class="formula">W = P × t</div>
+    <div style="font-size:11px;color:#aaa;">W — кВт·цаг, P — кВт, t — цаг</div>
+  </div>
+</div>
+
+<!-- ========== БОДЛОГО ========== -->
+<div class="panel" id="problems">
+  <h2>✏️ Бодлогууд</h2>
+
+  <div class="problem">
+    <b>Бодлого 1.</b> 220V хүчдэлд 60W чийдэн.
+    <div class="q">а) Гүйдэл? б) Эсэргүүцэл?</div>
+    <button class="answer-btn" onclick="toggleAns('a1')">Хариу</button>
+    <div class="answer" id="a1">а) I = 60/220 = <b>0.27 A</b><br>б) R = 220²/60 = <b>806.7 Ω</b></div>
+  </div>
+
+  <div class="problem">
+    <b>Бодлого 2.</b> 3 чийдэн зэрэгцээ, нэг бүр 100W.
+    <div class="q">Нийт гүйдэл ба чадал?</div>
+    <button class="answer-btn" onclick="toggleAns('a2')">Хариу</button>
+    <div class="answer" id="a2">P = 300W, I = 300/220 = <b>1.36 A</b></div>
+  </div>
+
+  <div class="problem">
+    <b>Бодлого 3.</b> Цуваа: R₁=400Ω, R₂=600Ω, U=220V.
+    <div class="q">R, I, U₁, U₂?</div>
+    <button class="answer-btn" onclick="toggleAns('a3')">Хариу</button>
+    <div class="answer" id="a3">R=1000Ω, I=0.22A<br>U₁=88V, U₂=132V</div>
+  </div>
+
+  <div class="problem">
+    <b>Бодлого 4.</b> 20м² өрөөг 200лк гэрэлтүүлэх.
+    <div class="q">Φ = ?</div>
+    <button class="answer-btn" onclick="toggleAns('a4')">Хариу</button>
+    <div class="answer" id="a4">Φ = 200×20 = <b>4000 lm</b></div>
+  </div>
+
+  <div class="problem">
+    <b>Бодлого 5.</b> 100W чийдэн өдөрт 5ц, 30 хоног.
+    <div class="q">W = ?</div>
+    <button class="answer-btn" onclick="toggleAns('a5')">Хариу</button>
+    <div class="answer" id="a5">W = 0.1×150 = <b>15 кВт·цаг</b></div>
+  </div>
+
+  <div class="problem">
+    <b>Бодлого 6.</b> Зэрэгцээ: R₁=300Ω, R₂=600Ω, U=220V.
+    <div class="q">R, I?</div>
+    <button class="answer-btn" onclick="toggleAns('a6')">Хариу</button>
+    <div class="answer" id="a6">R=200Ω, I=220/200 = <b>1.1 A</b></div>
+  </div>
+</div>
+
+<!-- ========== БАГИЙН ДААЛГАВАР ========== -->
+<div class="panel" id="teams">
+  <h2>👥 10 багийн даалгавар</h2>
+  <div class="hint">Баг бүр өөрийн дугаарыг дарж даалгавраа харна уу.</div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-text" id="progressText">Гүйцэтгэл: 0/10 баг</div>
+
+  <div class="team-grid" id="teamGrid">
+    <!-- JavaScript-ээр үүсгэнэ -->
+  </div>
+
+  <div class="task-box" id="taskBox">
+    <h3 id="taskTitle"></h3>
+    <div class="objective" id="taskObjective"></div>
+    <div class="formula-box" id="taskFormula"></div>
+    <div class="criteria" id="taskCriteria"></div>
+    <div class="hint" id="taskHint"></div>
+    <button class="check-btn" onclick="markDone()">✅ Гүйцэтгэсэн</button>
+  </div>
+</div>
+
+<script>
+  let isOn = false;
+
+  function showTab(name, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(name).classList.add('active');
+  }
+
+  function toggleAns(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  function toggleSwitch() {
+    isOn = !isOn;
+    const bulb = document.getElementById('bulb');
+    const sw = document.getElementById('switch');
+    const status = document.getElementById('status');
+    const wires = ['w1', 'w2', 'w3'];
+    const swArm = document.getElementById('sw-arm');
+    const bulbCircle = document.getElementById('bulb-circle');
+    const flowTxt = document.getElementById('flow-txt');
+
+    if (isOn) {
+      bulb.classList.add('on'); sw.classList.add('on');
+      status.textContent = 'АСААЛТТАЙ';
+      status.classList.remove('off'); status.classList.add('on');
+      wires.forEach(w => document.getElementById(w).classList.add('active'));
+      swArm.setAttribute('x2', '200'); swArm.setAttribute('y2', '90');
+      swArm.setAttribute('stroke', '#ffdd00');
+      bulbCircle.setAttribute('fill', '#ffdd00');
+      flowTxt.textContent = 'Гүйдэл: урсаж байна ⚡';
+      flowTxt.setAttribute('fill', '#ffdd00');
+      ['row1','row2','row3'].forEach(r => document.getElementById(r).classList.add('active'));
+    } else {
+      bulb.classList.remove('on'); sw.classList.remove('on');
+      status.textContent = 'УНТРААЛТТАЙ';
+      status.classList.remove('on'); status.classList.add('off');
+      wires.forEach(w => document.getElementById(w).classList.remove('active'));
+      swArm.setAttribute('x2', '200'); swArm.setAttribute('y2', '70');
+      swArm.setAttribute('stroke', '#888');
+      bulbCircle.setAttribute('fill', '#222');
+      flowTxt.textContent = 'Гүйдэл: зогссон';
+      flowTxt.setAttribute('fill', '#888');
+      ['row1','row2','row3'].forEach(r => document.getElementById(r).classList.remove('active'));
+    }
+  }
+
+  // ===== 10 БАГИЙН ДААЛГАВАР =====
+  const teams = [
+    {
+      num: 1,
+      title: "Омын хууль",
+      objective: "220V хүчдэлд 100W чийдэнгийн гүйдэл ба эсэргүүцлийг тооцоол.",
+      formula: "I = P/U ;  R = U²/P",
+      criteria: "I = 0.45 A, R = 484 Ω гэж гарсан бол зөв.",
+      hint: "P=100W, U=220V утгуудыг томъёонд шууд орлуул."
+    },
+    {
+      num: 2,
+      title: "Чадал тооцоо",
+      objective: "220V, 0.5A гүйдэлтэй чийдэнгийн чадлыг ол.",
+      formula: "P = U × I",
+      criteria: "P = 110 W гэж гарсан бол зөв.",
+      hint: "U=220, I=0.5 утгуудыг үржүүл."
+    },
+    {
+      num: 3,
+      title: "Цуваа холболт",
+      objective: "R₁=200Ω, R₂=300Ω цуваа холбогдсон. Нийт эсэргүүцлийг ол.",
+      formula: "R = R₁ + R₂",
+      criteria: "R = 500 Ω гэж гарсан бол зөв.",
+      hint: "Цуваа холболтод эсэргүүцлүүд нэмэгдэнэ."
+    },
+    {
+      num: 4,
+      title: "Зэрэгцээ холболт",
+      objective: "R₁=300Ω, R₂=600Ω зэрэгцээ. Нийт эсэргүүцлийг ол.",
+      formula: "1/R = 1/R₁ + 1/R₂",
+      criteria: "R = 200 Ω гэж гарсан бол зөв.",
+      hint: "1/300 + 1/600 = 3/600 → R = 200Ω"
+    },
+    {
+      num: 5,
+      title: "Гэрэлтүүлэлт",
+      objective: "30м² өрөөг 150лк гэрэлтүүлэхэд хэдэн люмен хэрэгтэй вэ?",
+      formula: "Φ = E × S",
+      criteria: "Φ = 4500 lm гэж гарсан бол зөв.",
+      hint: "E=150, S=30 утгуудыг үржүүл."
+    },
+    {
+      num: 6,
+      title: "Энерги зарцуулалт",
+      objective: "60W чийдэн өдөрт 4ц, 30 хоног ажиллахад хэдэн кВт·цаг зарцуулах вэ?",
+      formula: "W = P × t",
+      criteria: "W = 7.2 кВт·цаг гэж гарсан бол зөв.",
+      hint: "P=0.06кВт, t=4×30=120ц → W=7.2"
+    },
+    {
+      num: 7,
+      title: "Холимог холболт",
+      objective: "R₁=100Ω цуваа R₂=200Ω, дараа нь R₃=300Ω зэрэгцээ. Нийт R?",
+      formula: "R₁₂ = R₁+R₂ ;  1/R = 1/R₁₂ + 1/R₃",
+      criteria: "R = 150 Ω гэж гарсан бол зөв.",
+      hint: "R₁₂=300Ω, дараа нь 300Ω ба 300Ω зэрэгцээ → 150Ω"
+    },
+    {
+      num: 8,
+      title: "Гүйдэл ба чадал",
+      objective: "2 чийдэн зэрэгцээ: 60W ба 100W, 220V. Нийт гүйдлийг ол.",
+      formula: "I = (P₁ + P₂) / U",
+      criteria: "I = 0.73 A гэж гарсан бол зөв.",
+      hint: "(60+100)/220 = 0.727A"
+    },
+    {
+      num: 9,
+      title: "Утасны хөндлөн огтлол",
+      objective: "10A гүйдэл дамжуулах зэс утасны хамгийн бага хөндлөн огтлолыг ол (j=5A/mm²).",
+      formula: "S = I / j",
+      criteria: "S = 2 мм² гэж гарсан бол зөв.",
+      hint: "I=10A, j=5A/mm² → S=2mm²"
+    },
+    {
+      num: 10,
+      title: "Хүчдэлийн уналт",
+      objective: "20м урт, 2.5мм² зэс утас, 5A гүйдэл. Хүчдэлийн уналтыг ол (ρ=0.0175).",
+      formula: "ΔU = 2 × ρ × L × I / S",
+      criteria: "ΔU ≈ 1.4 V гэж гарсан бол зөв.",
+      hint: "2×0.0175×20×5/2.5 = 1.4V"
+    }
+  ];
+
+  let selectedTeam = null;
+  let doneTeams = new Set();
+
+  function renderTeams() {
+    const grid = document.getElementById('teamGrid');
+    grid.innerHTML = '';
+    teams.forEach(t => {
+      const card = document.createElement('div');
+      card.className = 'team-card' + (doneTeams.has(t.num) ? ' done' : '');
+      card.innerHTML = `
+        <div class="team-num">${t.num}-р баг ${doneTeams.has(t.num) ? '✓' : ''}</div>
+        <div class="team-title">${t.title}</div>
+      `;
+      card.onclick = () => selectTeam(t.num);
+      grid.appendChild(card);
+    });
+    updateProgress();
+  }
+
+  function selectTeam(num) {
+    selectedTeam = num;
+    const t = teams.find(x => x.num === num);
+
+    document.querySelectorAll('.team-card').forEach((c, i) => {
+      c.classList.toggle('selected', teams[i].num === num);
+    });
+
+    document.getElementById('taskTitle').innerHTML =
+      `${t.num}-р баг: ${t.title} ${doneTeams.has(t.num) ? '<span class="done-badge">ГҮЙЦЭТГЭСЭН</span>' : ''}`;
+    document.getElementById('taskObjective').innerHTML =
+      `<b>🎯 Зорилго:</b> ${t.objective}`;
+    document.getElementById('taskFormula').innerHTML =
+      `<b>📐 Томъёо:</b> ${t.formula}`;
+    document.getElementById('taskCriteria').innerHTML =
+      `<b>✅ Шалгуур:</b> ${t.criteria}`;
+    document.getElementById('taskHint').innerHTML =
+      `<b>💡 Зөвлөгөө:</b> ${t.hint}`;
+
+    document.getElementById('taskBox').classList.add('show');
+  }
+
+  function markDone() {
+    if (!selectedTeam) return;
+    doneTeams.add(selectedTeam);
+    renderTeams();
+    selectTeam(selectedTeam);
+  }
+
+  function updateProgress() {
+    const pct = (doneTeams.size / teams.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent =
+      `Гүйцэтгэл: ${doneTeams.size}/${teams.length} баг`;
+  }
+
+  // Анхны ачаалалт
+  renderTeams();
+</script>
+
+</body>
+</html>
