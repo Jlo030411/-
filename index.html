@@ -603,3 +603,329 @@
     <div class="q">W = ?</div>
     <button class="answer-btn" onclick="toggleAns('a5')">Хариу</button>
     <div class="answer" id="a5">W = 0.1×150 = <b>15 кВт·цаг</b></div>
+  </div>
+
+  <div class="problem">
+    <b>Бодлого 6.</b> Зэрэгцээ: R₁=300Ω, R₂=600Ω, U=220V.
+    <div class="q">R, I?</div>
+    <button class="answer-btn" onclick="toggleAns('a6')">Хариу</button>
+    <div class="answer" id="a6">R=200Ω, I=220/200 = <b>1.1 A</b></div>
+  </div>
+</div>
+
+<!-- ========== БАГИЙН ДААЛГАВАР ========== -->
+<div class="panel" id="teams">
+  <h2>👥 10 багийн даалгавар</h2>
+  <div class="hint">Баг бүр өөрийн дугаарыг дарж даалгавраа харна уу.</div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-text" id="progressText">Гүйцэтгэл: 0/10 баг</div>
+
+  <div class="team-grid" id="teamGrid"></div>
+
+  <div class="task-box" id="taskBox">
+    <h3 id="taskTitle"></h3>
+    <div class="objective" id="taskObjective"></div>
+    <div class="formula-box" id="taskFormula"></div>
+    <div class="criteria" id="taskCriteria"></div>
+    <div class="hint" id="taskHint"></div>
+    <button class="check-btn" onclick="markDone()">✅ Гүйцэтгэсэн</button>
+  </div>
+</div>
+
+<script>
+  // ===== TABS =====
+  let isOn = false;
+
+  function showTab(name, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(name).classList.add('active');
+  }
+
+  function toggleAns(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  // ===== СИМУЛЯЦ =====
+  function toggleSwitch() {
+    isOn = !isOn;
+    const bulb = document.getElementById('bulb');
+    const sw = document.getElementById('switch');
+    const status = document.getElementById('status');
+    const wires = ['w1', 'w2', 'w3'];
+    const swArm = document.getElementById('sw-arm');
+    const bulbCircle = document.getElementById('bulb-circle');
+    const flowTxt = document.getElementById('flow-txt');
+
+    if (isOn) {
+      bulb.classList.add('on'); sw.classList.add('on');
+      status.textContent = 'АСААЛТТАЙ';
+      status.classList.remove('off'); status.classList.add('on');
+      wires.forEach(w => document.getElementById(w).classList.add('active'));
+      swArm.setAttribute('x2', '200'); swArm.setAttribute('y2', '90');
+      swArm.setAttribute('stroke', '#ffdd00');
+      bulbCircle.setAttribute('fill', '#ffdd00');
+      flowTxt.textContent = 'Гүйдэл: урсаж байна ⚡';
+      flowTxt.setAttribute('fill', '#ffdd00');
+      ['row1','row2','row3'].forEach(r => document.getElementById(r).classList.add('active'));
+    } else {
+      bulb.classList.remove('on'); sw.classList.remove('on');
+      status.textContent = 'УНТРААЛТТАЙ';
+      status.classList.remove('on'); status.classList.add('off');
+      wires.forEach(w => document.getElementById(w).classList.remove('active'));
+      swArm.setAttribute('x2', '200'); swArm.setAttribute('y2', '70');
+      swArm.setAttribute('stroke', '#888');
+      bulbCircle.setAttribute('fill', '#222');
+      flowTxt.textContent = 'Гүйдэл: зогссон';
+      flowTxt.setAttribute('fill', '#888');
+      ['row1','row2','row3'].forEach(r => document.getElementById(r).classList.remove('active'));
+    }
+  }
+
+  // ===== ӨРӨӨНИЙ МОНТАЖ =====
+  let currentScenario = 1;
+  let currentStep = 1;
+
+  const scenarios = {
+    1: {
+      title: "1 чийдэн, 1 унтраалга — Хамгийн энгийн хэлхээ",
+      bulbs: 1,
+      switches: 1,
+      description: "Нэг чийдэнг нэг унтраалгаар удирдах"
+    },
+    2: {
+      title: "2 чийдэн, 1 унтраалга — Зэрэгцээ холболт",
+      bulbs: 2,
+      switches: 1,
+      description: "Хоёр чийдэнг нэг унтраалгаар зэрэгцээ удирдах"
+    },
+    3: {
+      title: "3 чийдэн, 1 унтраалга — Олон чийдэн",
+      bulbs: 3,
+      switches: 1,
+      description: "Гурван чийдэнг нэг унтраалгаар удирдах"
+    },
+    4: {
+      title: "4 чийдэн, 1 унтраалга — Бүх чийдэн",
+      bulbs: 4,
+      switches: 1,
+      description: "Дөрвөн чийдэнг нэг унтраалгаар удирдах"
+    },
+    5: {
+      title: "2 чийдэн, 2 унтраалга — Тус тусдаа",
+      bulbs: 2,
+      switches: 2,
+      description: "Хоёр чийдэнг тус тусад нь удирдах"
+    },
+    6: {
+      title: "4 чийдэн, 2 унтраалга — Хос хосоор",
+      bulbs: 4,
+      switches: 2,
+      description: "4 чийдэнг 2 унтраалгаар хос хосоор удирдах"
+    }
+  };
+
+  const stepDescriptions = [
+    "Цахилгаан самбар суурилуулах — MCB автомат унтраалга тавих",
+    "Холболтын хайрцаг тавих — Таазанд бэхлэх",
+    "Фаз (L) утас татах — Цахилгаан самбараас хайрцаг руу",
+    "Саармаг (N) утас татах — Цахилгаан самбараас хайрцаг руу",
+    "Чийдэн холбох — Хайрцгаас чийдэн рүү",
+    "Унтраалга холбох — Хайрцгаас унтраалга руу",
+    "Шалгах, турших — Бүх холболтыг шалгаж, асаах"
+  ];
+
+  function selectScenario(num, btn) {
+    currentScenario = num;
+    currentStep = 1;
+
+    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const s = scenarios[num];
+    document.getElementById('roomInfo').innerHTML =
+      `<b>Туршилт ${num}:</b> ${s.title}<br><span style="font-size:11px;color:#888;">${s.description}</span>`;
+
+    // Чийдэнгуудыг харуулах/нуух
+    const bulbIds = ['h1', 'h2', 'h3', 'h4'];
+    bulbIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      const textEl = el.nextElementSibling;
+      if (i < s.bulbs) {
+        el.style.display = 'block';
+        textEl.style.display = 'block';
+        el.setAttribute('fill', '#333');
+        el.setAttribute('stroke', '#666');
+      } else {
+        el.style.display = 'none';
+        textEl.style.display = 'none';
+      }
+    });
+
+    // S2 унтраалгыг харуулах/нуух
+    const s2box = document.getElementById('s2box');
+    if (s.switches === 2) {
+      s2box.style.display = 'block';
+    } else {
+      s2box.style.display = 'none';
+    }
+
+    // Алхмуудыг reset
+    updateSteps();
+  }
+
+  function updateSteps() {
+    const steps = document.querySelectorAll('.step-item');
+    steps.forEach((el, i) => {
+      el.classList.remove('done', 'current');
+      if (i < currentStep) {
+        el.classList.add('done');
+        el.querySelector('.step-num').textContent = '✓';
+      } else if (i === currentStep) {
+        el.classList.add('current');
+        el.querySelector('.step-num').textContent = i + 1;
+      } else {
+        el.querySelector('.step-num').textContent = i + 1;
+      }
+    });
+
+    const hint = document.getElementById('stepHint');
+    if (currentStep < stepDescriptions.length) {
+      hint.innerHTML = `💡 Одоо: <b>${stepDescriptions[currentStep]}</b>`;
+    } else {
+      hint.innerHTML = `✅ Бүх алхам дууссан! "Турших" товч дарж хэлхээг шалгана уу.`;
+    }
+  }
+
+  function nextStep() {
+    if (currentStep < stepDescriptions.length) {
+      currentStep++;
+      updateSteps();
+    } else {
+      alert('✅ Бүх алхам дууссан! "Турших" товч дарна уу.');
+    }
+  }
+
+  function testCircuit() {
+    const s = scenarios[currentScenario];
+
+    // Чийдэнгуудыг асаах
+    const bulbIds = ['h1', 'h2', 'h3', 'h4'];
+    bulbIds.forEach((id, i) => {
+      if (i < s.bulbs) {
+        const el = document.getElementById(id);
+        el.setAttribute('fill', '#ffdd00');
+        el.setAttribute('stroke', '#ffaa00');
+        el.style.filter = 'drop-shadow(0 0 10px #ffdd00)';
+      }
+    });
+
+    // 2 секундын дараа унтраах
+    setTimeout(() => {
+      bulbIds.forEach((id, i) => {
+        if (i < s.bulbs) {
+          const el = document.getElementById(id);
+          el.setAttribute('fill', '#333');
+          el.setAttribute('stroke', '#666');
+          el.style.filter = 'none';
+        }
+      });
+    }, 2000);
+
+    // Мэдэгдэл
+    const hint = document.getElementById('stepHint');
+    hint.innerHTML = `⚡ Туршилт ${currentScenario}: ${s.bulbs} чийдэн асаж байна...`;
+    setTimeout(() => {
+      hint.innerHTML = `✅ Туршилт ${currentScenario} амжилттай! ${s.bulbs} чийдэн, ${s.switches} унтраалга.`;
+    }, 2100);
+  }
+
+  function resetRoom() {
+    currentStep = 1;
+    updateSteps();
+    const s = scenarios[currentScenario];
+    const bulbIds = ['h1', 'h2', 'h3', 'h4'];
+    bulbIds.forEach((id, i) => {
+      if (i < s.bulbs) {
+        const el = document.getElementById(id);
+        el.setAttribute('fill', '#333');
+        el.setAttribute('stroke', '#666');
+        el.style.filter = 'none';
+      }
+    });
+    document.getElementById('stepHint').innerHTML = `💡 Одоо: <b>${stepDescriptions[currentStep]}</b>`;
+  }
+
+  // ===== 10 БАГИЙН ДААЛГАВАР =====
+  const teams = [
+    { num: 1, title: "Омын хууль", objective: "220V хүчдэлд 100W чийдэнгийн гүйдэл ба эсэргүүцлийг тооцоол.", formula: "I = P/U ; R = U²/P", criteria: "I = 0.45 A, R = 484 Ω", hint: "P=100W, U=220V." },
+    { num: 2, title: "Чадал тооцоо", objective: "220V, 0.5A гүйдэлтэй чийдэнгийн чадлыг ол.", formula: "P = U × I", criteria: "P = 110 W", hint: "U=220, I=0.5." },
+    { num: 3, title: "Цуваа холболт", objective: "R₁=200Ω, R₂=300Ω цуваа. Нийт эсэргүүцэл?", formula: "R = R₁ + R₂", criteria: "R = 500 Ω", hint: "Нэмэгдэнэ." },
+    { num: 4, title: "Зэрэгцээ холболт", objective: "R₁=300Ω, R₂=600Ω зэрэгцээ. Нийт R?", formula: "1/R = 1/R₁ + 1/R₂", criteria: "R = 200 Ω", hint: "1/300 + 1/600." },
+    { num: 5, title: "Гэрэлтүүлэлт", objective: "30м² өрөөг 150лк. Φ = ?", formula: "Φ = E × S", criteria: "Φ = 4500 lm", hint: "150 × 30." },
+    { num: 6, title: "Энерги", objective: "60W чийдэн 4ц × 30 хоног. W = ?", formula: "W = P × t", criteria: "W = 7.2 кВт·цаг", hint: "0.06 × 120." },
+    { num: 7, title: "Холимог", objective: "R₁=100Ω цуваа R₂=200Ω, R₃=300Ω зэрэгцээ. R = ?", formula: "R₁₂=R₁+R₂ ; 1/R=1/R₁₂+1/R₃", criteria: "R = 150 Ω", hint: "R₁₂=300Ω." },
+    { num: 8, title: "Гүйдэл", objective: "60W + 100W зэрэгцээ, 220V. I = ?", formula: "I = (P₁ + P₂) / U", criteria: "I = 0.73 A", hint: "160/220." },
+    { num: 9, title: "Утасны огтлол", objective: "10A, j=5A/mm². S = ?", formula: "S = I / j", criteria: "S = 2 мм²", hint: "10/5." },
+    { num: 10, title: "Хүчдэлийн уналт", objective: "L=20м, S=2.5мм², I=5A, ρ=0.0175. ΔU = ?", formula: "ΔU = 2ρLI/S", criteria: "ΔU ≈ 1.4 V", hint: "2×0.0175×20×5/2.5." }
+  ];
+
+  let selectedTeam = null;
+  let doneTeams = new Set();
+
+  function renderTeams() {
+    const grid = document.getElementById('teamGrid');
+    grid.innerHTML = '';
+    teams.forEach(t => {
+      const card = document.createElement('div');
+      card.className = 'team-card' + (doneTeams.has(t.num) ? ' done' : '');
+      card.innerHTML = `
+        <div class="team-num">${t.num}-р баг ${doneTeams.has(t.num) ? '✓' : ''}</div>
+        <div class="team-title">${t.title}</div>
+      `;
+      card.onclick = () => selectTeam(t.num);
+      grid.appendChild(card);
+    });
+    updateProgress();
+  }
+
+  function selectTeam(num) {
+    selectedTeam = num;
+    const t = teams.find(x => x.num === num);
+    document.querySelectorAll('.team-card').forEach((c, i) => {
+      c.classList.toggle('selected', teams[i].num === num);
+    });
+    document.getElementById('taskTitle').innerHTML =
+      `${t.num}-р баг: ${t.title} ${doneTeams.has(t.num) ? '<span class="done-badge">ГҮЙЦЭТГЭСЭН</span>' : ''}`;
+    document.getElementById('taskObjective').innerHTML = `<b>🎯 Зорилго:</b> ${t.objective}`;
+    document.getElementById('taskFormula').innerHTML = `<b>📐 Томъёо:</b> ${t.formula}`;
+    document.getElementById('taskCriteria').innerHTML = `<b>✅ Шалгуур:</b> ${t.criteria}`;
+    document.getElementById('taskHint').innerHTML = `<b>💡 Зөвлөгөө:</b> ${t.hint}`;
+    document.getElementById('taskBox').classList.add('show');
+  }
+
+  function markDone() {
+    if (!selectedTeam) return;
+    doneTeams.add(selectedTeam);
+    renderTeams();
+    selectTeam(selectedTeam);
+  }
+
+  function updateProgress() {
+    const pct = (doneTeams.size / teams.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent =
+      `Гүйцэтгэл: ${doneTeams.size}/${teams.length} баг`;
+  }
+
+  // Анхны ачаалалт
+  renderTeams();
+  updateSteps();
+</script>
+
+</body>
+</html>
