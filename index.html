@@ -72,6 +72,7 @@
   .c-red { background: #e94560; }
   .c-blue { background: #0077ff; }
   .c-green { background: #00ff88; }
+  .c-yellow { background: #ffdd00; }
   .wire-info { flex: 1; }
   .wire-info b { color: #00d9ff; }
 
@@ -217,7 +218,121 @@
     font-size: 11px; color: #aaa; margin-top: 5px;
   }
 
+  /* ==== ӨРӨӨНИЙ МОНТАЖ ==== */
+  .scenario-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  .scenario-btn {
+    background: #0d1b2a;
+    border: 2px solid #0f3460;
+    color: #aaa;
+    padding: 6px 10px;
+    border-radius: 15px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .scenario-btn.active {
+    background: #0f3460;
+    color: #00ff88;
+    border-color: #00ff88;
+  }
+
+  .room-view {
+    background: #0d1b2a;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .step-list {
+    background: #0d1b2a;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    margin: 4px 0;
+    border-radius: 6px;
+    background: #1a2a3a;
+    font-size: 12px;
+    border-left: 4px solid #444;
+  }
+  .step-item.done {
+    border-left-color: #00ff88;
+    background: #1a3a2a;
+  }
+  .step-item.current {
+    border-left-color: #ffdd00;
+    background: #3a3a1a;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #444;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .step-item.done .step-num { background: #00ff88; color: #0d1b2a; }
+  .step-item.current .step-num { background: #ffdd00; color: #0d1b2a; }
+  .step-text { flex: 1; text-align: left; }
+
+  .control-btns {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .ctrl-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .btn-next {
+    background: #00ff88;
+    color: #0d1b2a;
+  }
+  .btn-reset {
+    background: #e94560;
+    color: #fff;
+  }
+  .btn-test {
+    background: #00d9ff;
+    color: #0d1b2a;
+  }
+
   .hint { font-size: 11px; color: #888; margin-top: 8px; line-height: 1.5; }
+
+  .info-box {
+    background: #1a2a3a;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    color: #00d9ff;
+    margin-bottom: 10px;
+    border-left: 4px solid #00d9ff;
+  }
 </style>
 </head>
 <body>
@@ -229,6 +344,7 @@
   <div class="tab active" onclick="showTab('schematic', this)">📐 Схем</div>
   <div class="tab" onclick="showTab('wiring', this)">🔌 Холболт</div>
   <div class="tab" onclick="showTab('sim', this)">⚡ Симуляц</div>
+  <div class="tab" onclick="showTab('room', this)">🏠 Өрөөний монтаж</div>
   <div class="tab" onclick="showTab('theory', this)">📘 Онол</div>
   <div class="tab" onclick="showTab('problems', this)">✏️ Бодлого</div>
   <div class="tab" onclick="showTab('teams', this)">👥 Багийн даалгавар</div>
@@ -301,6 +417,109 @@
     <div class="bulb" id="bulb"></div>
     <button class="switch" id="switch" onclick="toggleSwitch()"></button>
     <div class="status off" id="status">УНТРААЛТТАЙ</div>
+  </div>
+</div>
+
+<!-- ========== ӨРӨӨНИЙ МОНТАЖ ========== -->
+<div class="panel" id="room">
+  <h2>🏠 Өрөөний гэрэлтүүлэг монтаж</h2>
+
+  <div class="info-box" id="roomInfo">
+    Туршилт 1: 1 чийдэн, 1 унтраалга — Хамгийн энгийн хэлхээ
+  </div>
+
+  <!-- Туршилт сонгох -->
+  <div class="scenario-tabs">
+    <button class="scenario-btn active" onclick="selectScenario(1, this)">1. 1 чийдэн</button>
+    <button class="scenario-btn" onclick="selectScenario(2, this)">2. 2 чийдэн</button>
+    <button class="scenario-btn" onclick="selectScenario(3, this)">3. 3 чийдэн</button>
+    <button class="scenario-btn" onclick="selectScenario(4, this)">4. 4 чийдэн</button>
+    <button class="scenario-btn" onclick="selectScenario(5, this)">5. 2 унтраалга</button>
+    <button class="scenario-btn" onclick="selectScenario(6, this)">6. Хос хосоор</button>
+  </div>
+
+  <!-- Өрөөний зураг -->
+  <div class="room-view">
+    <svg id="roomSvg" viewBox="0 0 340 320" width="100%" style="max-width:340px">
+      <!-- Хана -->
+      <rect x="10" y="10" width="320" height="300" fill="#0a1520" stroke="#0f3460" stroke-width="3" rx="5"/>
+
+      <!-- Таазны чийдэнгууд -->
+      <g id="bulbsLayer">
+        <circle cx="90" cy="70" r="15" fill="#333" stroke="#666" stroke-width="2" id="h1"/>
+        <text x="85" y="75" fill="#fff" font-size="10" font-weight="bold">H1</text>
+
+        <circle cx="170" cy="70" r="15" fill="#333" stroke="#666" stroke-width="2" id="h2"/>
+        <text x="165" y="75" fill="#fff" font-size="10" font-weight="bold">H2</text>
+
+        <circle cx="250" cy="70" r="15" fill="#333" stroke="#666" stroke-width="2" id="h3"/>
+        <text x="245" y="75" fill="#fff" font-size="10" font-weight="bold">H3</text>
+
+        <circle cx="170" cy="120" r="15" fill="#333" stroke="#666" stroke-width="2" id="h4"/>
+        <text x="165" y="125" fill="#fff" font-size="10" font-weight="bold">H4</text>
+      </g>
+
+      <!-- Холболтын хайрцаг -->
+      <rect x="140" y="170" width="60" height="40" fill="#1a2a3a" stroke="#00d9ff" stroke-width="2" rx="5" id="junctionBox"/>
+      <text x="148" y="193" fill="#00d9ff" font-size="9" font-weight="bold">ХАЙРЦАГ</text>
+
+      <!-- Унтраалга S1 -->
+      <rect x="50" y="240" width="40" height="50" fill="#1a2a3a" stroke="#ffdd00" stroke-width="2" rx="5" id="s1box"/>
+      <text x="62" y="270" fill="#ffdd00" font-size="11" font-weight="bold">S1</text>
+
+      <!-- Унтраалга S2 (2 унтраалгатай туршилтад) -->
+      <rect x="250" y="240" width="40" height="50" fill="#1a2a3a" stroke="#ffdd00" stroke-width="2" rx="5" id="s2box" style="display:none"/>
+      <text x="262" y="270" fill="#ffdd00" font-size="11" font-weight="bold">S2</text>
+
+      <!-- Цахилгаан самбар -->
+      <rect x="10" y="150" width="40" height="60" fill="#1a2a3a" stroke="#e94560" stroke-width="2" rx="5"/>
+      <text x="16" y="175" fill="#e94560" font-size="9" font-weight="bold">ЦС</text>
+      <text x="14" y="190" fill="#e94560" font-size="7">220V</text>
+    </svg>
+  </div>
+
+  <!-- Угсрах дараалал -->
+  <div class="step-list" id="stepList">
+    <h3>📋 Угсрах дараалал</h3>
+    <div class="step-item done" data-step="0">
+      <div class="step-num">✓</div>
+      <div class="step-text">Цахилгаан самбар суурилуулах</div>
+    </div>
+    <div class="step-item current" data-step="1">
+      <div class="step-num">2</div>
+      <div class="step-text">Холболтын хайрцаг тавих</div>
+    </div>
+    <div class="step-item" data-step="2">
+      <div class="step-num">3</div>
+      <div class="step-text">Фаз (L) утас татах</div>
+    </div>
+    <div class="step-item" data-step="3">
+      <div class="step-num">4</div>
+      <div class="step-text">Саармаг (N) утас татах</div>
+    </div>
+    <div class="step-item" data-step="4">
+      <div class="step-num">5</div>
+      <div class="step-text">Чийдэн холбох</div>
+    </div>
+    <div class="step-item" data-step="5">
+      <div class="step-num">6</div>
+      <div class="step-text">Унтраалга холбох</div>
+    </div>
+    <div class="step-item" data-step="6">
+      <div class="step-num">7</div>
+      <div class="step-text">Шалгах, турших</div>
+    </div>
+  </div>
+
+  <!-- Удирдлагын товч -->
+  <div class="control-btns">
+    <button class="ctrl-btn btn-next" onclick="nextStep()">▶ Дараагийн алхам</button>
+    <button class="ctrl-btn btn-test" onclick="testCircuit()">⚡ Турших</button>
+    <button class="ctrl-btn btn-reset" onclick="resetRoom()">🔄 Дахин</button>
+  </div>
+
+  <div class="hint" id="stepHint">
+    💡 Одоо: Холболтын хайрцгийг таазанд бэхлэх
   </div>
 </div>
 
@@ -384,231 +603,3 @@
     <div class="q">W = ?</div>
     <button class="answer-btn" onclick="toggleAns('a5')">Хариу</button>
     <div class="answer" id="a5">W = 0.1×150 = <b>15 кВт·цаг</b></div>
-  </div>
-
-  <div class="problem">
-    <b>Бодлого 6.</b> Зэрэгцээ: R₁=300Ω, R₂=600Ω, U=220V.
-    <div class="q">R, I?</div>
-    <button class="answer-btn" onclick="toggleAns('a6')">Хариу</button>
-    <div class="answer" id="a6">R=200Ω, I=220/200 = <b>1.1 A</b></div>
-  </div>
-</div>
-
-<!-- ========== БАГИЙН ДААЛГАВАР ========== -->
-<div class="panel" id="teams">
-  <h2>👥 10 багийн даалгавар</h2>
-  <div class="hint">Баг бүр өөрийн дугаарыг дарж даалгавраа харна уу.</div>
-
-  <div class="progress-bar">
-    <div class="progress-fill" id="progressFill"></div>
-  </div>
-  <div class="progress-text" id="progressText">Гүйцэтгэл: 0/10 баг</div>
-
-  <div class="team-grid" id="teamGrid">
-    <!-- JavaScript-ээр үүсгэнэ -->
-  </div>
-
-  <div class="task-box" id="taskBox">
-    <h3 id="taskTitle"></h3>
-    <div class="objective" id="taskObjective"></div>
-    <div class="formula-box" id="taskFormula"></div>
-    <div class="criteria" id="taskCriteria"></div>
-    <div class="hint" id="taskHint"></div>
-    <button class="check-btn" onclick="markDone()">✅ Гүйцэтгэсэн</button>
-  </div>
-</div>
-
-<script>
-  let isOn = false;
-
-  function showTab(name, el) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById(name).classList.add('active');
-  }
-
-  function toggleAns(id) {
-    document.getElementById(id).classList.toggle('show');
-  }
-
-  function toggleSwitch() {
-    isOn = !isOn;
-    const bulb = document.getElementById('bulb');
-    const sw = document.getElementById('switch');
-    const status = document.getElementById('status');
-    const wires = ['w1', 'w2', 'w3'];
-    const swArm = document.getElementById('sw-arm');
-    const bulbCircle = document.getElementById('bulb-circle');
-    const flowTxt = document.getElementById('flow-txt');
-
-    if (isOn) {
-      bulb.classList.add('on'); sw.classList.add('on');
-      status.textContent = 'АСААЛТТАЙ';
-      status.classList.remove('off'); status.classList.add('on');
-      wires.forEach(w => document.getElementById(w).classList.add('active'));
-      swArm.setAttribute('x2', '200'); swArm.setAttribute('y2', '90');
-      swArm.setAttribute('stroke', '#ffdd00');
-      bulbCircle.setAttribute('fill', '#ffdd00');
-      flowTxt.textContent = 'Гүйдэл: урсаж байна ⚡';
-      flowTxt.setAttribute('fill', '#ffdd00');
-      ['row1','row2','row3'].forEach(r => document.getElementById(r).classList.add('active'));
-    } else {
-      bulb.classList.remove('on'); sw.classList.remove('on');
-      status.textContent = 'УНТРААЛТТАЙ';
-      status.classList.remove('on'); status.classList.add('off');
-      wires.forEach(w => document.getElementById(w).classList.remove('active'));
-      swArm.setAttribute('x2', '200'); swArm.setAttribute('y2', '70');
-      swArm.setAttribute('stroke', '#888');
-      bulbCircle.setAttribute('fill', '#222');
-      flowTxt.textContent = 'Гүйдэл: зогссон';
-      flowTxt.setAttribute('fill', '#888');
-      ['row1','row2','row3'].forEach(r => document.getElementById(r).classList.remove('active'));
-    }
-  }
-
-  // ===== 10 БАГИЙН ДААЛГАВАР =====
-  const teams = [
-    {
-      num: 1,
-      title: "Омын хууль",
-      objective: "220V хүчдэлд 100W чийдэнгийн гүйдэл ба эсэргүүцлийг тооцоол.",
-      formula: "I = P/U ;  R = U²/P",
-      criteria: "I = 0.45 A, R = 484 Ω гэж гарсан бол зөв.",
-      hint: "P=100W, U=220V утгуудыг томъёонд шууд орлуул."
-    },
-    {
-      num: 2,
-      title: "Чадал тооцоо",
-      objective: "220V, 0.5A гүйдэлтэй чийдэнгийн чадлыг ол.",
-      formula: "P = U × I",
-      criteria: "P = 110 W гэж гарсан бол зөв.",
-      hint: "U=220, I=0.5 утгуудыг үржүүл."
-    },
-    {
-      num: 3,
-      title: "Цуваа холболт",
-      objective: "R₁=200Ω, R₂=300Ω цуваа холбогдсон. Нийт эсэргүүцлийг ол.",
-      formula: "R = R₁ + R₂",
-      criteria: "R = 500 Ω гэж гарсан бол зөв.",
-      hint: "Цуваа холболтод эсэргүүцлүүд нэмэгдэнэ."
-    },
-    {
-      num: 4,
-      title: "Зэрэгцээ холболт",
-      objective: "R₁=300Ω, R₂=600Ω зэрэгцээ. Нийт эсэргүүцлийг ол.",
-      formula: "1/R = 1/R₁ + 1/R₂",
-      criteria: "R = 200 Ω гэж гарсан бол зөв.",
-      hint: "1/300 + 1/600 = 3/600 → R = 200Ω"
-    },
-    {
-      num: 5,
-      title: "Гэрэлтүүлэлт",
-      objective: "30м² өрөөг 150лк гэрэлтүүлэхэд хэдэн люмен хэрэгтэй вэ?",
-      formula: "Φ = E × S",
-      criteria: "Φ = 4500 lm гэж гарсан бол зөв.",
-      hint: "E=150, S=30 утгуудыг үржүүл."
-    },
-    {
-      num: 6,
-      title: "Энерги зарцуулалт",
-      objective: "60W чийдэн өдөрт 4ц, 30 хоног ажиллахад хэдэн кВт·цаг зарцуулах вэ?",
-      formula: "W = P × t",
-      criteria: "W = 7.2 кВт·цаг гэж гарсан бол зөв.",
-      hint: "P=0.06кВт, t=4×30=120ц → W=7.2"
-    },
-    {
-      num: 7,
-      title: "Холимог холболт",
-      objective: "R₁=100Ω цуваа R₂=200Ω, дараа нь R₃=300Ω зэрэгцээ. Нийт R?",
-      formula: "R₁₂ = R₁+R₂ ;  1/R = 1/R₁₂ + 1/R₃",
-      criteria: "R = 150 Ω гэж гарсан бол зөв.",
-      hint: "R₁₂=300Ω, дараа нь 300Ω ба 300Ω зэрэгцээ → 150Ω"
-    },
-    {
-      num: 8,
-      title: "Гүйдэл ба чадал",
-      objective: "2 чийдэн зэрэгцээ: 60W ба 100W, 220V. Нийт гүйдлийг ол.",
-      formula: "I = (P₁ + P₂) / U",
-      criteria: "I = 0.73 A гэж гарсан бол зөв.",
-      hint: "(60+100)/220 = 0.727A"
-    },
-    {
-      num: 9,
-      title: "Утасны хөндлөн огтлол",
-      objective: "10A гүйдэл дамжуулах зэс утасны хамгийн бага хөндлөн огтлолыг ол (j=5A/mm²).",
-      formula: "S = I / j",
-      criteria: "S = 2 мм² гэж гарсан бол зөв.",
-      hint: "I=10A, j=5A/mm² → S=2mm²"
-    },
-    {
-      num: 10,
-      title: "Хүчдэлийн уналт",
-      objective: "20м урт, 2.5мм² зэс утас, 5A гүйдэл. Хүчдэлийн уналтыг ол (ρ=0.0175).",
-      formula: "ΔU = 2 × ρ × L × I / S",
-      criteria: "ΔU ≈ 1.4 V гэж гарсан бол зөв.",
-      hint: "2×0.0175×20×5/2.5 = 1.4V"
-    }
-  ];
-
-  let selectedTeam = null;
-  let doneTeams = new Set();
-
-  function renderTeams() {
-    const grid = document.getElementById('teamGrid');
-    grid.innerHTML = '';
-    teams.forEach(t => {
-      const card = document.createElement('div');
-      card.className = 'team-card' + (doneTeams.has(t.num) ? ' done' : '');
-      card.innerHTML = `
-        <div class="team-num">${t.num}-р баг ${doneTeams.has(t.num) ? '✓' : ''}</div>
-        <div class="team-title">${t.title}</div>
-      `;
-      card.onclick = () => selectTeam(t.num);
-      grid.appendChild(card);
-    });
-    updateProgress();
-  }
-
-  function selectTeam(num) {
-    selectedTeam = num;
-    const t = teams.find(x => x.num === num);
-
-    document.querySelectorAll('.team-card').forEach((c, i) => {
-      c.classList.toggle('selected', teams[i].num === num);
-    });
-
-    document.getElementById('taskTitle').innerHTML =
-      `${t.num}-р баг: ${t.title} ${doneTeams.has(t.num) ? '<span class="done-badge">ГҮЙЦЭТГЭСЭН</span>' : ''}`;
-    document.getElementById('taskObjective').innerHTML =
-      `<b>🎯 Зорилго:</b> ${t.objective}`;
-    document.getElementById('taskFormula').innerHTML =
-      `<b>📐 Томъёо:</b> ${t.formula}`;
-    document.getElementById('taskCriteria').innerHTML =
-      `<b>✅ Шалгуур:</b> ${t.criteria}`;
-    document.getElementById('taskHint').innerHTML =
-      `<b>💡 Зөвлөгөө:</b> ${t.hint}`;
-
-    document.getElementById('taskBox').classList.add('show');
-  }
-
-  function markDone() {
-    if (!selectedTeam) return;
-    doneTeams.add(selectedTeam);
-    renderTeams();
-    selectTeam(selectedTeam);
-  }
-
-  function updateProgress() {
-    const pct = (doneTeams.size / teams.length) * 100;
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressText').textContent =
-      `Гүйцэтгэл: ${doneTeams.size}/${teams.length} баг`;
-  }
-
-  // Анхны ачаалалт
-  renderTeams();
-</script>
-
-</body>
-</html>
